@@ -3,11 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game of Rokor</title>
+  <title>Robot III - Prototype</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
 </head>
 <body>
-  <canvas id="gameCanvas" width="640" height="480"></canvas>
-  <script type="module" src="js/game.js"></script>
+  <div class="page">
+    <header>
+      <h1>Robot III Web-Prototyp</h1>
+      <p>Phaser 3, EGA/VGA Pixel Art, Grid-based Movement</p>
+    </header>
+    <main>
+      <div id="game"></div>
+      <section class="instructions">
+        <h2>Steuerung</h2>
+        <ul>
+          <li>Pfeiltasten: Bewegen (Tile-by-Tile)</li>
+          <li>Leertaste / Enter: Aktion mit aktivem Item</li>
+          <li>1-5: Item auswählen (Schaufel, Schlüssel, Machete, Floß, Chip)</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
