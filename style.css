@@ -1,14 +1,28 @@
-body {
-    margin: 0;
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: white;
-    font-family: sans-serif;
+:root {
+  color-scheme: dark;
 }
 
-#gameCanvas {
-    border: 1px solid white;
+body {
+  margin: 0;
+  background: #0b0b0b;
+  font-family: "Courier New", monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#gameContainer {
+  width: min(960px, 96vw);
+  aspect-ratio: 16 / 10;
+  border: 8px solid #222;
+  background: #000;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  display: block;
 }
