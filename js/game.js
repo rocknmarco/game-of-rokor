@@ -6,9 +6,13 @@ const gameState = {
   inventory: {
     shovel: true,
     keyBlue: false,
+    keyGreen: false,
+    keyRed: false,
     machete: false,
     raft: false,
-    chip: false,
+    chip: 0,
+    food: 0,
+    lamp: false,
   },
   selected: 'shovel',
   health: 3,
@@ -27,59 +31,123 @@ const TILE = {
   BUSH: 6,
   SPIKES: 7,
   ENTRANCE: 8,
-  DOOR: 9,
+  DOOR_BLUE: 9,
+  DOOR_GREEN: 10,
+  DOOR_RED: 11,
+  BRIDGE: 12,
+  LAVA: 13,
+  CITY: 14,
 };
 
 const OVERWORLD_MAP = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 6, 6, 0, 1, 1, 1, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 6, 6, 0, 1, 0, 1, 0, 0, 0, 2, 2, 0, 7, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 1, 9, 1, 0, 0, 0, 2, 2, 0, 7, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 6, 6, 0, 1, 1, 1, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 14, 10, 14, 14, 0, 1],
+  [1, 0, 6, 6, 0, 1, 9, 1, 0, 0, 0, 2, 2, 2, 0, 7, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 2, 2, 0, 7, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 11, 14, 14, 0, 1],
+  [1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 14, 14, 14, 14, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const INTERIOR_MAP = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 5, 5, 5, 5, 5, 5, 5, 5, 1],
-  [1, 5, 1, 1, 1, 1, 1, 1, 5, 1],
-  [1, 5, 1, 5, 5, 5, 5, 1, 5, 1],
-  [1, 5, 1, 5, 5, 5, 5, 1, 5, 1],
-  [1, 5, 1, 5, 5, 5, 5, 1, 5, 1],
-  [1, 5, 5, 5, 5, 5, 5, 5, 5, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
+const ROOMS = {
+  house1: {
+    name: 'Bankhaus',
+    map: [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 5, 5, 5, 5, 5, 5, 5, 5, 1],
+      [1, 5, 1, 1, 1, 1, 1, 1, 5, 1],
+      [1, 5, 1, 5, 5, 5, 5, 1, 5, 1],
+      [1, 5, 1, 5, 5, 5, 5, 1, 5, 1],
+      [1, 5, 1, 5, 5, 5, 5, 1, 5, 1],
+      [1, 5, 5, 5, 5, 5, 5, 5, 5, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ],
+    entrance: { x: 1, y: 6 },
+    exit: { x: 1, y: 6 },
+    items: [
+      { x: 4, y: 4, type: 'raft' },
+      { x: 7, y: 2, type: 'chip' },
+    ],
+  },
+  cave1: {
+    name: 'Höhle der Funken',
+    map: [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 1],
+      [1, 5, 1, 1, 1, 5, 1, 5, 1, 1, 5, 1],
+      [1, 5, 1, 5, 5, 5, 1, 5, 1, 5, 5, 1],
+      [1, 5, 1, 5, 1, 5, 5, 5, 1, 5, 1, 1],
+      [1, 5, 5, 5, 1, 5, 1, 5, 5, 5, 5, 1],
+      [1, 1, 1, 5, 1, 5, 1, 1, 1, 1, 5, 1],
+      [1, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ],
+    entrance: { x: 1, y: 7 },
+    exit: { x: 1, y: 7 },
+    items: [
+      { x: 9, y: 1, type: 'lamp' },
+      { x: 3, y: 5, type: 'food' },
+    ],
+  },
+  temple1: {
+    name: 'Tempel der Klingen',
+    map: [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1],
+      [1, 5, 1, 1, 1, 5, 1, 1, 1, 5, 1, 5, 1],
+      [1, 5, 1, 7, 5, 5, 5, 7, 1, 5, 1, 5, 1],
+      [1, 5, 1, 5, 5, 1, 5, 5, 1, 5, 5, 5, 1],
+      [1, 5, 5, 5, 7, 5, 1, 5, 5, 5, 1, 5, 1],
+      [1, 5, 1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 1],
+      [1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ],
+    entrance: { x: 1, y: 7 },
+    exit: { x: 1, y: 7 },
+    items: [
+      { x: 10, y: 1, type: 'keyRed' },
+      { x: 5, y: 6, type: 'chip' },
+    ],
+  },
+};
 
 const overworldItems = [
   { x: 16, y: 5, type: 'chip' },
-];
-
-const interiorItems = [
-  { x: 4, y: 4, type: 'raft' },
+  { x: 3, y: 2, type: 'machete' },
+  { x: 21, y: 2, type: 'keyGreen' },
+  { x: 21, y: 6, type: 'keyRed' },
+  { x: 19, y: 1, type: 'food' },
 ];
 
 const digSites = [
   { x: 4, y: 7, contains: 'keyBlue', dug: false },
+  { x: 5, y: 7, contains: 'food', dug: false },
 ];
 
 const overworldState = {
   map: OVERWORLD_MAP.map((row) => [...row]),
   items: overworldItems.map((item) => ({ ...item })),
+  entrances: [
+    { x: 6, y: 3, target: 'house1' },
+    { x: 18, y: 12, target: 'cave1' },
+    { x: 2, y: 14, target: 'temple1' },
+  ],
 };
 
-const interiorState = {
-  map: INTERIOR_MAP.map((row) => [...row]),
-  items: interiorItems.map((item) => ({ ...item })),
-};
+const roomState = {};
 
 function createCanvas(size, drawFn) {
   const canvas = document.createElement('canvas');
@@ -111,11 +179,17 @@ function createTextures(scene) {
     brick: '#aa2222',
     brickDark: '#661111',
     doorBlue: '#3ac2ff',
+    doorGreen: '#4bff9b',
+    doorRed: '#ff4b4b',
     bush1: '#228833',
     bush2: '#116622',
     spike: '#ff44aa',
     floor: '#444444',
     hole: '#221100',
+    bridge: '#c28c4a',
+    lava1: '#ff6b2d',
+    lava2: '#b53a1f',
+    city: '#7a7a7a',
   };
 
   const dither = (ctx, size, colorA, colorB) => {
@@ -199,8 +273,22 @@ function createTextures(scene) {
     }
   });
 
-  addBase64Texture(scene, 'door', TILE_SIZE, (ctx, size) => {
+  addBase64Texture(scene, 'door-blue', TILE_SIZE, (ctx, size) => {
     ctx.fillStyle = colors.doorBlue;
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = colors.black;
+    ctx.fillRect(size / 2 - 2, size / 2 - 2, 4, 4);
+  });
+
+  addBase64Texture(scene, 'door-green', TILE_SIZE, (ctx, size) => {
+    ctx.fillStyle = colors.doorGreen;
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = colors.black;
+    ctx.fillRect(size / 2 - 2, size / 2 - 2, 4, 4);
+  });
+
+  addBase64Texture(scene, 'door-red', TILE_SIZE, (ctx, size) => {
+    ctx.fillStyle = colors.doorRed;
     ctx.fillRect(0, 0, size, size);
     ctx.fillStyle = colors.black;
     ctx.fillRect(size / 2 - 2, size / 2 - 2, 4, 4);
@@ -211,6 +299,23 @@ function createTextures(scene) {
     ctx.fillRect(0, 0, size, size);
     ctx.fillStyle = '#111111';
     ctx.fillRect(6, 4, size - 12, size - 8);
+  });
+
+  addBase64Texture(scene, 'bridge', TILE_SIZE, (ctx, size) => {
+    dither(ctx, size, colors.bridge, '#a36c2e');
+    ctx.fillStyle = '#6b3f1a';
+    ctx.fillRect(0, size / 2 - 2, size, 4);
+  });
+
+  addBase64Texture(scene, 'lava', TILE_SIZE, (ctx, size) => {
+    dither(ctx, size, colors.lava1, colors.lava2);
+  });
+
+  addBase64Texture(scene, 'city', TILE_SIZE, (ctx, size) => {
+    ctx.fillStyle = colors.city;
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#5a5a5a';
+    ctx.fillRect(4, 4, size - 8, size - 8);
   });
 
   addBase64Texture(scene, 'player', TILE_SIZE, (ctx, size) => {
@@ -230,38 +335,64 @@ function createTextures(scene) {
     ctx.fillRect(18, 10, 4, 4);
   });
 
-  addBase64Texture(scene, 'icon-shovel', 16, (ctx, size) => {
+  addBase64Texture(scene, 'icon-shovel', 16, (ctx) => {
     ctx.fillStyle = '#bbbbbb';
     ctx.fillRect(7, 2, 2, 10);
     ctx.fillStyle = '#885533';
     ctx.fillRect(6, 10, 4, 6);
   });
 
-  addBase64Texture(scene, 'icon-key', 16, (ctx, size) => {
+  addBase64Texture(scene, 'icon-key-blue', 16, (ctx) => {
     ctx.fillStyle = '#4bd9ff';
     ctx.fillRect(2, 6, 8, 4);
     ctx.fillRect(8, 4, 6, 2);
     ctx.fillRect(10, 8, 4, 2);
   });
 
-  addBase64Texture(scene, 'icon-machete', 16, (ctx, size) => {
+  addBase64Texture(scene, 'icon-key-green', 16, (ctx) => {
+    ctx.fillStyle = '#4bff9b';
+    ctx.fillRect(2, 6, 8, 4);
+    ctx.fillRect(8, 4, 6, 2);
+    ctx.fillRect(10, 8, 4, 2);
+  });
+
+  addBase64Texture(scene, 'icon-key-red', 16, (ctx) => {
+    ctx.fillStyle = '#ff4b4b';
+    ctx.fillRect(2, 6, 8, 4);
+    ctx.fillRect(8, 4, 6, 2);
+    ctx.fillRect(10, 8, 4, 2);
+  });
+
+  addBase64Texture(scene, 'icon-machete', 16, (ctx) => {
     ctx.fillStyle = '#cccccc';
     ctx.fillRect(3, 3, 10, 3);
     ctx.fillStyle = '#884422';
     ctx.fillRect(10, 6, 3, 7);
   });
 
-  addBase64Texture(scene, 'icon-raft', 16, (ctx, size) => {
+  addBase64Texture(scene, 'icon-raft', 16, (ctx) => {
     ctx.fillStyle = '#aa7733';
     ctx.fillRect(2, 8, 12, 4);
     ctx.fillRect(4, 6, 8, 2);
   });
 
-  addBase64Texture(scene, 'icon-chip', 16, (ctx, size) => {
+  addBase64Texture(scene, 'icon-chip', 16, (ctx) => {
     ctx.fillStyle = '#00ff66';
     ctx.fillRect(4, 4, 8, 8);
     ctx.strokeStyle = '#004422';
     ctx.strokeRect(4, 4, 8, 8);
+  });
+
+  addBase64Texture(scene, 'icon-food', 16, (ctx) => {
+    ctx.fillStyle = '#ffcc66';
+    ctx.fillRect(4, 4, 8, 8);
+  });
+
+  addBase64Texture(scene, 'icon-lamp', 16, (ctx) => {
+    ctx.fillStyle = '#ffee88';
+    ctx.fillRect(6, 4, 4, 8);
+    ctx.fillStyle = '#aa8844';
+    ctx.fillRect(5, 12, 6, 2);
   });
 }
 
@@ -298,10 +429,20 @@ function tileToTexture(tile) {
       return 'bush';
     case TILE.SPIKES:
       return 'spikes';
-    case TILE.DOOR:
-      return 'door';
+    case TILE.DOOR_BLUE:
+      return 'door-blue';
+    case TILE.DOOR_GREEN:
+      return 'door-green';
+    case TILE.DOOR_RED:
+      return 'door-red';
     case TILE.ENTRANCE:
       return 'entrance';
+    case TILE.BRIDGE:
+      return 'bridge';
+    case TILE.LAVA:
+      return 'lava';
+    case TILE.CITY:
+      return 'city';
     default:
       return 'grass';
   }
@@ -309,10 +450,26 @@ function tileToTexture(tile) {
 
 function isPassable(tile) {
   if (tile === TILE.WALL) return false;
-  if (tile === TILE.DOOR) return false;
+  if (tile === TILE.DOOR_BLUE || tile === TILE.DOOR_GREEN || tile === TILE.DOOR_RED) return false;
   if (tile === TILE.BUSH) return gameState.inventory.machete;
   if (tile === TILE.WATER) return gameState.inventory.raft;
+  if (tile === TILE.LAVA) return false;
   return true;
+}
+
+function updateInventory(item) {
+  if (item.type === 'chip') {
+    gameState.inventory.chip += 1;
+    gameState.score += 100;
+  } else if (item.type === 'food') {
+    gameState.inventory.food += 1;
+    gameState.health = Math.min(5, gameState.health + 1);
+  } else {
+    gameState.inventory[item.type] = true;
+  }
+  eventBus.emit('inventoryUpdated');
+  eventBus.emit('healthUpdated', gameState.health);
+  eventBus.emit('scoreUpdated', gameState.score);
 }
 
 class BaseScene extends Phaser.Scene {
@@ -323,6 +480,9 @@ class BaseScene extends Phaser.Scene {
       three: Phaser.Input.Keyboard.KeyCodes.THREE,
       four: Phaser.Input.Keyboard.KeyCodes.FOUR,
       five: Phaser.Input.Keyboard.KeyCodes.FIVE,
+      six: Phaser.Input.Keyboard.KeyCodes.SIX,
+      seven: Phaser.Input.Keyboard.KeyCodes.SEVEN,
+      eight: Phaser.Input.Keyboard.KeyCodes.EIGHT,
     });
   }
 
@@ -334,13 +494,19 @@ class BaseScene extends Phaser.Scene {
       this.selectItem('keyBlue');
     }
     if (Phaser.Input.Keyboard.JustDown(this.selectionKeys.three)) {
-      this.selectItem('machete');
+      this.selectItem('keyGreen');
     }
     if (Phaser.Input.Keyboard.JustDown(this.selectionKeys.four)) {
-      this.selectItem('raft');
+      this.selectItem('keyRed');
     }
     if (Phaser.Input.Keyboard.JustDown(this.selectionKeys.five)) {
-      this.selectItem('chip');
+      this.selectItem('machete');
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.selectionKeys.six)) {
+      this.selectItem('raft');
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.selectionKeys.seven)) {
+      this.selectItem('lamp');
     }
   }
 
@@ -356,8 +522,12 @@ class OverworldScene extends BaseScene {
     super('Overworld');
     this.map = overworldState.map;
     this.items = overworldState.items;
+    this.entrances = overworldState.entrances;
     this.playerTile = { x: 2, y: 10 };
-    this.returnTile = { x: 6, y: 5 };
+    this.bots = [
+      { x: 9, y: 3, dir: 1 },
+      { x: 15, y: 8, dir: -1 },
+    ];
   }
 
   init(data) {
@@ -383,6 +553,11 @@ class OverworldScene extends BaseScene {
       }
     }
 
+    this.entrances.forEach((entrance) => {
+      this.map[entrance.y][entrance.x] = TILE.ENTRANCE;
+      this.tiles[entrance.y][entrance.x].setTexture(tileToTexture(TILE.ENTRANCE));
+    });
+
     this.player = this.add.image(this.playerTile.x * TILE_SIZE + TILE_SIZE / 2, this.playerTile.y * TILE_SIZE + TILE_SIZE / 2, 'player');
     this.player.setDepth(10);
 
@@ -393,13 +568,11 @@ class OverworldScene extends BaseScene {
       this.itemSprites.set(item, sprite);
     });
 
-    this.bot = {
-      x: 9,
-      y: 3,
-      dir: 1,
-      sprite: this.add.image(9 * TILE_SIZE + TILE_SIZE / 2, 3 * TILE_SIZE + TILE_SIZE / 2, 'bot'),
-    };
-    this.bot.sprite.setDepth(9);
+    this.botSprites = this.bots.map((bot) => {
+      const sprite = this.add.image(bot.x * TILE_SIZE + TILE_SIZE / 2, bot.y * TILE_SIZE + TILE_SIZE / 2, 'bot');
+      sprite.setDepth(9);
+      return sprite;
+    });
 
     this.moving = false;
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -411,9 +584,9 @@ class OverworldScene extends BaseScene {
     this.cameras.main.startFollow(this.player, true, 0.25, 0.25);
 
     this.time.addEvent({
-      delay: 600,
+      delay: 500,
       loop: true,
-      callback: () => this.moveBot(),
+      callback: () => this.moveBots(),
     });
   }
 
@@ -460,8 +633,11 @@ class OverworldScene extends BaseScene {
       this.damagePlayer();
     }
     if (tile === TILE.ENTRANCE) {
-      this.transitionToInterior();
-      return;
+      const entrance = this.entrances.find((entry) => entry.x === this.playerTile.x && entry.y === this.playerTile.y);
+      if (entrance) {
+        this.transitionToRoom(entrance.target);
+        return;
+      }
     }
 
     const item = this.items.find((entry) => entry.x === this.playerTile.x && entry.y === this.playerTile.y);
@@ -485,10 +661,16 @@ class OverworldScene extends BaseScene {
       }
     }
 
-    if (gameState.selected === 'keyBlue') {
-      const doorPosition = this.findAdjacentTile(TILE.DOOR);
-      if (doorPosition) {
-        const { x: doorX, y: doorY } = doorPosition;
+    const door = this.findAdjacentDoor();
+    if (door) {
+      const { doorX, doorY, tile } = door;
+      const keyMatch = {
+        [TILE.DOOR_BLUE]: 'keyBlue',
+        [TILE.DOOR_GREEN]: 'keyGreen',
+        [TILE.DOOR_RED]: 'keyRed',
+      };
+      const requiredKey = keyMatch[tile];
+      if (requiredKey && gameState.selected === requiredKey) {
         this.map[doorY][doorX] = TILE.ENTRANCE;
         this.tiles[doorY][doorX].setTexture(tileToTexture(TILE.ENTRANCE));
         playBeep(660, 0.1, 'square');
@@ -505,6 +687,24 @@ class OverworldScene extends BaseScene {
         playBeep(300, 0.1, 'sawtooth');
       }
     }
+  }
+
+  findAdjacentDoor() {
+    const dirs = [
+      { x: 1, y: 0 },
+      { x: -1, y: 0 },
+      { x: 0, y: 1 },
+      { x: 0, y: -1 },
+    ];
+    for (const dir of dirs) {
+      const doorX = this.playerTile.x + dir.x;
+      const doorY = this.playerTile.y + dir.y;
+      const tile = this.map[doorY]?.[doorX];
+      if (tile === TILE.DOOR_BLUE || tile === TILE.DOOR_GREEN || tile === TILE.DOOR_RED) {
+        return { doorX, doorY, tile };
+      }
+    }
+    return null;
   }
 
   findAdjacentTile(tileType) {
@@ -527,10 +727,7 @@ class OverworldScene extends BaseScene {
   }
 
   collectItem(item) {
-    gameState.inventory[item.type] = true;
-    gameState.score += 50;
-    eventBus.emit('inventoryUpdated');
-    eventBus.emit('scoreUpdated', gameState.score);
+    updateInventory(item);
     const sprite = this.itemSprites.get(item);
     if (sprite) sprite.destroy();
     this.items = this.items.filter((entry) => entry !== item);
@@ -552,39 +749,50 @@ class OverworldScene extends BaseScene {
     this.player.setPosition(this.playerTile.x * TILE_SIZE + TILE_SIZE / 2, this.playerTile.y * TILE_SIZE + TILE_SIZE / 2);
   }
 
-  transitionToInterior() {
+  transitionToRoom(roomId) {
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      this.scene.start('Interior', { returnTile: { x: 6, y: 5 } });
+      this.scene.start('Room', { roomId, returnTile: { ...this.playerTile } });
     });
   }
 
-  moveBot() {
-    const nextX = this.bot.x + this.bot.dir;
-    if (!isPassable(this.map[this.bot.y][nextX])) {
-      this.bot.dir *= -1;
-      return;
-    }
-    this.bot.x = nextX;
-    this.bot.sprite.x = this.bot.x * TILE_SIZE + TILE_SIZE / 2;
-    if (this.bot.x === this.playerTile.x && this.bot.y === this.playerTile.y) {
-      this.damagePlayer();
-    }
+  moveBots() {
+    this.bots.forEach((bot, index) => {
+      const nextX = bot.x + bot.dir;
+      if (!isPassable(this.map[bot.y][nextX])) {
+        bot.dir *= -1;
+        return;
+      }
+      bot.x = nextX;
+      const sprite = this.botSprites[index];
+      sprite.x = bot.x * TILE_SIZE + TILE_SIZE / 2;
+      if (bot.x === this.playerTile.x && bot.y === this.playerTile.y) {
+        this.damagePlayer();
+      }
+    });
   }
 }
 
-class InteriorScene extends BaseScene {
+class RoomScene extends BaseScene {
   constructor() {
-    super('Interior');
-    this.map = interiorState.map;
-    this.items = interiorState.items;
-    this.playerTile = { x: 2, y: 6 };
+    super('Room');
+    this.playerTile = { x: 1, y: 1 };
   }
 
   init(data) {
-    if (data?.returnTile) {
-      this.returnTile = data.returnTile;
+    this.roomId = data.roomId;
+    this.returnTile = data.returnTile || { x: 6, y: 5 };
+    const roomData = ROOMS[this.roomId];
+    if (!roomState[this.roomId]) {
+      roomState[this.roomId] = {
+        map: roomData.map.map((row) => [...row]),
+        items: roomData.items.map((item) => ({ ...item })),
+      };
     }
+    this.map = roomState[this.roomId].map;
+    this.items = roomState[this.roomId].items;
+    this.playerTile = { ...roomData.entrance };
+    this.exitTile = { ...roomData.exit };
   }
 
   create() {
@@ -603,8 +811,8 @@ class InteriorScene extends BaseScene {
       }
     }
 
-    this.map[6][1] = TILE.ENTRANCE;
-    this.tiles[6][1].setTexture(tileToTexture(TILE.ENTRANCE));
+    this.map[this.exitTile.y][this.exitTile.x] = TILE.ENTRANCE;
+    this.tiles[this.exitTile.y][this.exitTile.x].setTexture(tileToTexture(TILE.ENTRANCE));
 
     this.player = this.add.image(this.playerTile.x * TILE_SIZE + TILE_SIZE / 2, this.playerTile.y * TILE_SIZE + TILE_SIZE / 2, 'player');
     this.player.setDepth(10);
@@ -668,6 +876,9 @@ class InteriorScene extends BaseScene {
 
   onPlayerStep() {
     const tile = this.map[this.playerTile.y][this.playerTile.x];
+    if (tile === TILE.SPIKES) {
+      this.damagePlayer();
+    }
     if (tile === TILE.ENTRANCE) {
       this.transitionToOverworld();
       return;
@@ -686,19 +897,22 @@ class InteriorScene extends BaseScene {
   }
 
   collectItem(item) {
-    gameState.inventory[item.type] = true;
-    gameState.score += 75;
-    eventBus.emit('inventoryUpdated');
-    eventBus.emit('scoreUpdated', gameState.score);
+    updateInventory(item);
     const sprite = this.itemSprites.get(item);
     if (sprite) sprite.destroy();
     this.items = this.items.filter((entry) => entry !== item);
   }
 
+  damagePlayer() {
+    gameState.health = Math.max(0, gameState.health - 1);
+    eventBus.emit('healthUpdated', gameState.health);
+    playBeep(120, 0.2, 'sawtooth');
+  }
+
   transitionToOverworld() {
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      this.scene.start('Overworld', { returnTile: this.returnTile || { x: 6, y: 5 } });
+      this.scene.start('Overworld', { returnTile: this.returnTile });
     });
   }
 
@@ -716,7 +930,7 @@ class InteriorScene extends BaseScene {
     if (!this.fogMaskShape) return;
     this.fogMaskShape.clear();
     this.fogMaskShape.fillStyle(0xffffff);
-    const radius = 70;
+    const radius = gameState.inventory.lamp ? 110 : 70;
     this.fogMaskShape.fillCircle(this.player.x, this.player.y, radius);
   }
 }
@@ -755,10 +969,12 @@ class UIScene extends Phaser.Scene {
     this.inventoryGroup.clear(true, true);
     const entries = [
       { key: 'shovel', label: 'Schaufel', texture: 'icon-shovel' },
-      { key: 'keyBlue', label: 'Blau Schlüssel', texture: 'icon-key' },
+      { key: 'keyBlue', label: 'Blau', texture: 'icon-key-blue' },
+      { key: 'keyGreen', label: 'Grün', texture: 'icon-key-green' },
+      { key: 'keyRed', label: 'Rot', texture: 'icon-key-red' },
       { key: 'machete', label: 'Machete', texture: 'icon-machete' },
       { key: 'raft', label: 'Floß', texture: 'icon-raft' },
-      { key: 'chip', label: 'Chip', texture: 'icon-chip' },
+      { key: 'lamp', label: 'Lampe', texture: 'icon-lamp' },
     ];
 
     let x = 10;
@@ -786,8 +1002,24 @@ class UIScene extends Phaser.Scene {
       });
       label.setScrollFactor(0);
       this.inventoryGroup.add(label);
-      x += 100;
+      x += 90;
     });
+
+    const chipText = this.add.text(10, VIEW_HEIGHT - 46, `Chips: ${gameState.inventory.chip}`, {
+      fontFamily: 'Courier New',
+      fontSize: '10px',
+      color: '#00ff66',
+    });
+    chipText.setScrollFactor(0);
+    this.inventoryGroup.add(chipText);
+
+    const foodText = this.add.text(120, VIEW_HEIGHT - 46, `Proviant: ${gameState.inventory.food}`, {
+      fontFamily: 'Courier New',
+      fontSize: '10px',
+      color: '#ffcc66',
+    });
+    foodText.setScrollFactor(0);
+    this.inventoryGroup.add(foodText);
   }
 }
 
@@ -804,7 +1036,7 @@ const config = {
     width: VIEW_WIDTH,
     height: VIEW_HEIGHT,
   },
-  scene: [OverworldScene, InteriorScene, UIScene],
+  scene: [OverworldScene, RoomScene, UIScene],
 };
 
 new Phaser.Game(config);
