@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#102d36" />
+    <meta name="description" content="Rokor – Das Lichtarchiv. Ein sonniges Pixel-Abenteuer im Browser." />
+    <title>Rokor – Das Lichtarchiv</title>
+  </head>
+  <body>
+    <div id="app">
+      <section class="title-screen" id="title-screen" aria-label="Titelbildschirm">
+        <div class="title-screen__shade"></div>
+        <div class="title-screen__content">
+          <p class="eyebrow">Ein Pixel-Abenteuer</p>
+          <h1><span>Rokor</span><small>Das Lichtarchiv</small></h1>
+          <p class="title-screen__intro">
+            Die Sonnenwarte schweigt. Drei Siegel liegen verstreut auf der Insel Liora –
+            und mit jedem Schatten erwacht etwas unter den Ruinen.
+          </p>
+          <div class="title-screen__actions">
+            <button class="button button--primary" id="new-game">Expedition beginnen</button>
+            <button class="button button--glass" id="continue-game">Fortsetzen</button>
+          </div>
+          <div class="title-speed-config">
+            <label for="movement-speed-title">
+              <span>Bewegungstempo</span>
+              <small>Jederzeit anpassbar</small>
+            </label>
+            <select id="movement-speed-title" aria-label="Bewegungstempo">
+              <option value="slow">Langsam</option>
+              <option value="normal" selected>Normal</option>
+              <option value="fast">Schnell</option>
+            </select>
+          </div>
+          <p class="title-screen__hint">Tastatur · Touch · Gamepad-freundlich</p>
+        </div>
+      </section>
+
+      <main class="game-shell" id="game-shell" hidden>
+        <header class="topbar">
+          <button class="brand" id="menu-button" aria-label="Menü öffnen">
+            <span class="brand__sun" aria-hidden="true">✦</span>
+            <span><strong>ROKOR</strong><small>Das Lichtarchiv</small></span>
+          </button>
+          <div class="room-heading">
+            <span id="room-kicker">Insel Liora</span>
+            <strong id="room-name">Sonnengarten</strong>
+          </div>
+          <div class="hud-stats" aria-label="Status">
+            <span class="hud-stat"><i class="icon-heart" aria-hidden="true">♥</i><b id="health">5/5</b></span>
+            <span class="hud-stat"><i class="icon-sun" aria-hidden="true">✦</i><b id="score">0</b></span>
+            <span class="hud-stat"><i class="icon-seal" aria-hidden="true">◆</i><b id="seals">0/3</b></span>
+          </div>
+        </header>
+
+        <div class="game-layout">
+          <aside class="side-panel side-panel--left">
+            <section class="panel-card objective-card">
+              <p class="panel-label">Aktuelles Ziel</p>
+              <h2 id="objective-title">Finde die drei Sonnensiegel</h2>
+              <p id="objective-text">Erkunde Liora und bringe das Licht in die alte Warte zurück.</p>
+              <div class="progress-track"><span id="objective-progress"></span></div>
+            </section>
+
+            <section class="panel-card">
+              <div class="panel-heading"><p class="panel-label">Reisegepäck</p><span id="inventory-count">0 / 6</span></div>
+              <div class="inventory" id="inventory" aria-label="Inventar"></div>
+            </section>
+
+            <section class="panel-card controls-card">
+              <p class="panel-label">Steuerung</p>
+              <div class="key-row"><span><kbd>WASD</kbd><kbd>↑↓←→</kbd></span><b>Laufen</b></div>
+              <div class="key-row"><span><kbd>E</kbd></span><b>Benutzen</b></div>
+              <div class="key-row"><span><kbd>Leertaste</kbd></span><b>Stab</b></div>
+              <div class="key-row"><span><kbd>M</kbd></span><b>Karte</b></div>
+              <div class="speed-row">
+                <label for="movement-speed-game">Tempo</label>
+                <select id="movement-speed-game" aria-label="Bewegungstempo im Spiel">
+                  <option value="slow">Langsam</option>
+                  <option value="normal" selected>Normal</option>
+                  <option value="fast">Schnell</option>
+                </select>
+              </div>
+            </section>
+          </aside>
+
+          <section class="play-area" aria-label="Spielfeld">
+            <div class="canvas-wrap" id="canvas-wrap">
+              <canvas id="game-canvas" width="1440" height="864" aria-label="Rokor Spielfeld"></canvas>
+              <div class="room-banner" id="room-banner" aria-live="polite">
+                <span>Insel Liora</span><strong>Sonnengarten</strong>
+              </div>
+              <div class="toast" id="toast" aria-live="polite"></div>
+              <button class="action-prompt" id="action-prompt" hidden><kbd>E</kbd><span>Untersuchen</span></button>
+            </div>
+
+            <div class="mobile-controls" aria-label="Touch-Steuerung">
+              <div class="dpad">
+                <button data-move="up" aria-label="Nach oben">▲</button>
+                <button data-move="left" aria-label="Nach links">◀</button>
+                <button data-move="down" aria-label="Nach unten">▼</button>
+                <button data-move="right" aria-label="Nach rechts">▶</button>
+              </div>
+              <div class="mobile-actions">
+                <button data-action="interact"><small>E</small> Aktion</button>
+                <button data-action="attack"><small>●</small> Stab</button>
+              </div>
+            </div>
+          </section>
+
+          <aside class="side-panel side-panel--right">
+            <section class="panel-card map-card">
+              <div class="panel-heading"><p class="panel-label">Entdeckte Orte</p><span id="map-count">1 / 9</span></div>
+              <div class="mini-map" id="mini-map" aria-label="Karte der Insel"></div>
+              <div class="map-legend"><span><i class="map-dot map-dot--you"></i>Rokor</span><span><i class="map-dot map-dot--seal"></i>Siegel</span></div>
+            </section>
+
+            <section class="panel-card journal-card">
+              <div class="panel-heading"><p class="panel-label">Feldnotizen</p><span id="journal-count">1</span></div>
+              <div id="journal" class="journal"></div>
+            </section>
+
+            <section class="panel-card ambience-card">
+              <div><span class="ambience-icon">☀</span><span><b>Goldener Vormittag</b><small>Leichte Brise · 24°</small></span></div>
+              <button id="sound-toggle" aria-label="Ton ein- oder ausschalten">♫</button>
+            </section>
+          </aside>
+        </div>
+      </main>
+
+      <div class="dialog-backdrop" id="dialog-backdrop" hidden>
+        <article class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+          <div class="dialog__portrait" id="dialog-portrait">✦</div>
+          <div class="dialog__body">
+            <p class="panel-label" id="dialog-speaker">Feldnotiz</p>
+            <h2 id="dialog-title">Willkommen auf Liora</h2>
+            <p id="dialog-text"></p>
+            <button class="button button--primary" id="dialog-close">Weiter</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="map-overlay" id="map-overlay" hidden>
+        <button class="overlay-close" id="map-close" aria-label="Karte schließen">×</button>
+        <p class="eyebrow">Deine Reise</p>
+        <h2>Die Insel Liora</h2>
+        <div class="world-map" id="world-map"></div>
+        <p class="overlay-hint">Nur besuchte Orte werden benannt. <kbd>M</kbd> zum Schließen.</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

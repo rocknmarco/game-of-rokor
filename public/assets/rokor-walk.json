@@ -1,0 +1,16 @@
+{
+  "image": "rokor-walk.png",
+  "columns": 4,
+  "rows": 2,
+  "tileSize": 64,
+  "sprites": {
+    "downA": { "col": 0, "row": 0 },
+    "upA": { "col": 1, "row": 0 },
+    "leftA": { "col": 2, "row": 0 },
+    "rightA": { "col": 3, "row": 0 },
+    "downB": { "col": 0, "row": 1 },
+    "upB": { "col": 1, "row": 1 },
+    "leftB": { "col": 2, "row": 1 },
+    "rightB": { "col": 3, "row": 1 }
+  }
+}

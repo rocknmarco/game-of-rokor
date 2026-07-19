@@ -1,0 +1,37 @@
+{
+  "image": "landscape-atlas-light.png",
+  "columns": 5,
+  "rows": 5,
+  "tileSize": 48,
+  "sprites": {
+    "forestN": { "col": 0, "row": 0 },
+    "forestE": { "col": 1, "row": 0 },
+    "forestS": { "col": 2, "row": 0 },
+    "forestW": { "col": 3, "row": 0 },
+    "forestCenter": { "col": 4, "row": 0 },
+
+    "forestNW": { "col": 0, "row": 1 },
+    "forestNE": { "col": 1, "row": 1 },
+    "forestSE": { "col": 2, "row": 1 },
+    "forestSW": { "col": 3, "row": 1 },
+    "forestIsland": { "col": 4, "row": 1 },
+
+    "waterLandN": { "col": 0, "row": 2 },
+    "waterLandW": { "col": 1, "row": 2 },
+    "waterLandS": { "col": 2, "row": 2 },
+    "waterLandE": { "col": 3, "row": 2 },
+    "waterCenter": { "col": 4, "row": 2 },
+
+    "wallHorizontal": { "col": 0, "row": 3 },
+    "wallVertical": { "col": 1, "row": 3 },
+    "wallCornerNW": { "col": 2, "row": 3 },
+    "wallCornerNE": { "col": 3, "row": 3 },
+    "wallJunction": { "col": 4, "row": 3 },
+
+    "cliffN": { "col": 0, "row": 4 },
+    "cliffE": { "col": 1, "row": 4 },
+    "cliffS": { "col": 2, "row": 4 },
+    "cliffW": { "col": 3, "row": 4 },
+    "cliffCenter": { "col": 4, "row": 4 }
+  }
+}
