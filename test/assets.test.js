@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { access, readFile } from 'node:fs/promises';
 
 const assetUrl = new URL('../public/assets/', import.meta.url);
+const audioUrl = new URL('../public/audio/', import.meta.url);
 
 test('the sprite atlas contains every renderer-facing asset group', async () => {
   await access(new URL('tileset.png', assetUrl));
@@ -55,4 +56,18 @@ test('Rokor has two unmistakable walk frames in every direction', async () => {
     assert.ok(atlas.sprites[`${direction}A`]);
     assert.ok(atlas.sprites[`${direction}B`]);
   }
+});
+
+test('the web edition bundles the original Tobor action sounds and nature music', async () => {
+  for (const file of [
+    'dissolve-wall.ogg', 'drop-magnet.ogg', 'explosion-short.ogg', 'explosion.ogg',
+    'jingle-0.ogg', 'jingle-1.ogg', 'open-door.ogg', 'pickup-gold.ogg',
+    'pickup-key.ogg', 'pickup-misc.ogg', 'shoot-bullet.ogg', 'doppelganger.ogg', 'hit-plant.ogg', 'step-charlie.ogg',
+    'step-robot.ogg', 'step-tunnel.ogg', 'switch.ogg', 'use-garlic.ogg',
+  ]) {
+    const sound = await readFile(new URL(`sfx/${file}`, audioUrl));
+    assert.ok(sound.length > 1_000, `${file} is unexpectedly small`);
+  }
+  const nature = await readFile(new URL('mus/nature.ogg', audioUrl));
+  assert.ok(nature.length > 100_000);
 });

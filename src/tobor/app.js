@@ -2,6 +2,7 @@ import { loadToborGame } from './game-loader.js';
 import { SPEED_PRESETS, ToborEngine } from './engine.js';
 import { ToborRenderer } from './renderer.js';
 import { spriteFor } from './object-registry.js';
+import { ToborAudio } from './audio.js';
 
 const keyDirections = {
   ArrowUp: 'up', KeyW: 'up',
@@ -10,12 +11,21 @@ const keyDirections = {
   ArrowRight: 'right', KeyD: 'right',
 };
 
+const escapeHtml = (value) => String(value)
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;');
+
+const itemGroup = (id) => id.split('#')[0];
+
 export class ToborApp {
   constructor() {
     this.elements = {};
     this.gameData = null;
     this.engine = null;
     this.renderer = null;
+    this.audio = new ToborAudio();
     this.running = false;
     this.lastFrame = 0;
     this.dialogWasPaused = false;
@@ -26,22 +36,32 @@ export class ToborApp {
     this.inspectMode = false;
     this.inspectX = 0;
     this.inspectY = 0;
+    this.inventoryGroup = null;
+    this.inventoryIndex = 0;
+    this.inventoryActionIndex = 0;
+    this.inventoryEntries = [];
+    this.inventoryActions = [];
+    this.returnToTitleAfterDialog = false;
   }
 
   async mount() {
     const ids = [
-      'title-screen', 'game-shell', 'new-game', 'continue-game', 'menu-button', 'game-canvas',
+      'title-screen', 'game-shell', 'new-game', 'continue-game', 'clock-game', 'save-hint', 'menu-button', 'game-canvas',
       'movement-speed-title', 'movement-speed-game', 'loading-line', 'loading-progress', 'loading-text',
       'room-level', 'room-name', 'lives', 'gold', 'diamonds', 'points', 'ring-progress',
       'inventory', 'inventory-large', 'inventory-count', 'inventory-overlay', 'inventory-close',
+      'inventory-back', 'inventory-actions', 'inventory-caption',
       'pack-button', 'mini-map', 'map-count', 'map-button', 'map-overlay', 'map-close', 'world-map',
       'level-tabs', 'room-coordinates', 'room-banner', 'banner-level', 'banner-name', 'toast',
       'dialog-backdrop', 'dialog-title', 'dialog-text', 'dialog-close',
       'inspect-overlay', 'inspect-cursor', 'inspect-hint',
+      'audio-toggle', 'audio-toggle-title',
     ];
     for (const id of ids) this.elements[id] = document.getElementById(id);
     this.bindControls();
+    this.syncAudioControls();
 
+    const audioReady = this.audio.prepare();
     try {
       this.gameData = await loadToborGame('/games/insel-der-ruinen/game.json', (message, progress) => {
         this.elements['loading-text'].textContent = message;
@@ -50,9 +70,10 @@ export class ToborApp {
       document.documentElement.style.setProperty('--inventory-tileset', `url("${this.gameData.assets.tilesetUrl}")`);
       this.engine = new ToborEngine(this.gameData, (event) => this.onEngineEvent(event));
       this.renderer = new ToborRenderer(this.elements['game-canvas'], this.gameData);
+      await audioReady;
       this.syncSpeedControls();
       this.elements['new-game'].disabled = false;
-      this.elements['continue-game'].disabled = !this.engine.hasSave();
+      this.refreshSaveButtons();
       this.elements['loading-text'].textContent = `${this.gameData.rooms.size} Räume · bereit für die Expedition`;
       this.elements['loading-line'].classList.add('is-ready');
     } catch (error) {
@@ -64,14 +85,35 @@ export class ToborApp {
   }
 
   bindControls() {
-    this.elements['new-game'].addEventListener('click', () => this.start(false));
-    this.elements['continue-game'].addEventListener('click', () => this.start(true));
+    this.elements['new-game'].addEventListener('click', () => {
+      this.audio.unlock();
+      this.start('new');
+    });
+    this.elements['continue-game'].addEventListener('click', () => {
+      this.audio.unlock();
+      this.start('auto');
+    });
+    this.elements['clock-game'].addEventListener('click', () => {
+      this.audio.unlock();
+      this.start('clock');
+    });
     this.elements['menu-button'].addEventListener('click', () => this.returnToTitle());
     this.elements['dialog-close'].addEventListener('click', () => this.closeDialog());
+    this.elements['dialog-backdrop'].addEventListener('pointerdown', (event) => {
+      if (event.target === this.elements['dialog-backdrop']) this.closeDialog();
+    });
     this.elements['inventory-close'].addEventListener('click', () => this.toggleInventory(false));
+    this.elements['inventory-back'].addEventListener('click', () => this.leaveInventoryGroup());
     this.elements['pack-button'].addEventListener('click', () => this.toggleInventory(true));
     this.elements['map-button'].addEventListener('click', () => this.toggleMap(true));
     this.elements['map-close'].addEventListener('click', () => this.toggleMap(false));
+    for (const id of ['audio-toggle', 'audio-toggle-title']) {
+      this.elements[id].addEventListener('click', () => {
+        this.audio.unlock();
+        this.audio.toggle();
+        this.syncAudioControls();
+      });
+    }
     for (const id of ['movement-speed-title', 'movement-speed-game']) {
       this.elements[id].addEventListener('change', (event) => {
         this.engine?.setSpeedPreset(event.target.value);
@@ -82,6 +124,8 @@ export class ToborApp {
     window.addEventListener('keydown', (event) => this.onKeyDown(event), true);
     window.addEventListener('keyup', (event) => this.onKeyUp(event), true);
     window.addEventListener('blur', () => this.clearInput());
+    window.addEventListener('pagehide', () => this.engine?.save());
+    window.addEventListener('resize', () => this.positionInventoryActions());
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) this.clearInput();
     });
@@ -108,12 +152,16 @@ export class ToborApp {
     });
   }
 
-  start(continueGame) {
+  start(mode) {
     if (!this.engine) return;
-    if (!continueGame || !this.engine.load()) this.engine.newGame();
+    const loaded = mode === 'clock' ? this.engine.loadClockSave()
+      : mode === 'auto' ? this.engine.load()
+        : false;
+    if (!loaded) this.engine.newGame();
     this.running = true;
     this.elements['title-screen'].hidden = true;
     this.elements['game-shell'].hidden = false;
+    this.audio.setRoom(this.engine.currentRoom, true);
     this.updateUI();
   }
 
@@ -124,8 +172,27 @@ export class ToborApp {
     this.running = false;
     this.elements['game-shell'].hidden = true;
     this.elements['title-screen'].hidden = false;
-    this.elements['continue-game'].disabled = !this.engine.hasSave();
+    this.refreshSaveButtons();
+    this.audio.stopMusic();
     this.closeAllOverlays();
+  }
+
+  refreshSaveButtons() {
+    if (!this.engine) return;
+    const hasAutosave = this.engine.hasSave();
+    this.elements['continue-game'].disabled = !hasAutosave;
+    this.elements['continue-game'].title = hasAutosave
+      ? 'Den letzten automatischen Spielstand fortsetzen'
+      : 'Noch kein automatischer Spielstand vorhanden';
+    const hasClockSave = this.engine.hasClockSave();
+    this.elements['clock-game'].disabled = !hasClockSave;
+    this.elements['clock-game'].textContent = hasClockSave ? 'Uhr-Spielstand laden' : 'Noch kein Uhr-Spielstand';
+    this.elements['clock-game'].title = hasClockSave
+      ? 'Den zuletzt mit einer Uhr gespeicherten Spielstand laden'
+      : 'Finde und benutze im Spiel zuerst eine Uhr';
+    this.elements['save-hint'].textContent = hasClockSave
+      ? 'Ein dauerhafter Uhr-Spielstand ist vorhanden und kann hier jederzeit geladen werden.'
+      : 'Finde und benutze im Spiel eine Uhr, um einen dauerhaften Spielstand anzulegen.';
   }
 
   loop(time) {
@@ -140,6 +207,24 @@ export class ToborApp {
 
   onKeyDown(event) {
     if (!this.running || !this.engine) return;
+    if (!this.elements['dialog-backdrop'].hidden) {
+      if (event.code === 'Enter' || event.code === 'Escape' || event.code === 'Space') {
+        event.preventDefault();
+        if (!event.repeat) this.closeDialog();
+      }
+      return;
+    }
+    if (!this.elements['inventory-overlay'].hidden) {
+      this.handleInventoryKey(event);
+      return;
+    }
+    if (!this.elements['map-overlay'].hidden) {
+      if (event.code === 'Escape' || event.code === 'KeyM') {
+        event.preventDefault();
+        if (!event.repeat) this.toggleMap(false);
+      }
+      return;
+    }
     if (this.inspectMode) {
       event.preventDefault();
       if (event.repeat) return;
@@ -178,6 +263,32 @@ export class ToborApp {
     }
   }
 
+  handleInventoryKey(event) {
+    const navigation = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+    if (![...navigation, 'Enter', 'Space', 'Escape', 'KeyE'].includes(event.code)) return;
+    event.preventDefault();
+    if (event.repeat && !navigation.includes(event.code)) return;
+    if (event.code === 'Escape' || event.code === 'KeyE') {
+      if (this.inventoryGroup) this.leaveInventoryGroup();
+      else this.toggleInventory(false);
+      return;
+    }
+    if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
+      const delta = event.code === 'ArrowLeft' ? -1 : 1;
+      this.inventoryIndex = Math.max(0, Math.min(this.inventoryEntries.length - 1, this.inventoryIndex + delta));
+      this.inventoryActionIndex = 0;
+      this.renderInventory();
+      return;
+    }
+    if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+      const delta = event.code === 'ArrowUp' ? -1 : 1;
+      this.inventoryActionIndex = Math.max(0, Math.min(this.inventoryActions.length - 1, this.inventoryActionIndex + delta));
+      this.renderInventory();
+      return;
+    }
+    this.activateInventorySelection();
+  }
+
   onKeyUp(event) {
     const direction = this.pressedCodes.get(event.code);
     if (!direction) return;
@@ -192,10 +303,15 @@ export class ToborApp {
   }
 
   onEngineEvent(event) {
-    if (event.type === 'room') this.showRoomBanner(event.room, event.name);
+    if (event.type === 'room') {
+      if (event.firstVisit) this.showRoomBanner(event.room, event.name);
+      this.audio.setRoom(event.room);
+    }
+    if (event.type === 'sound') this.audio.play(event.name, { volume: event.volume });
     if (event.type === 'status') this.showToast(event.message);
     if (event.type === 'inspect') this.startInspectMode();
     if (event.type === 'message' || event.type === 'win' || event.type === 'lose') {
+      this.returnToTitleAfterDialog = event.type === 'lose';
       this.openDialog(event.title, event.text);
     }
     if (event.type === 'state' || event.type === 'room' || event.type === 'win' || event.type === 'lose') {
@@ -208,6 +324,16 @@ export class ToborApp {
     this.elements['movement-speed-title'].value = value;
     this.elements['movement-speed-game'].value = value;
     this.elements['movement-speed-title'].title = `${SPEED_PRESETS[value].tilesPerSecond} Felder pro Sekunde`;
+  }
+
+  syncAudioControls() {
+    for (const id of ['audio-toggle', 'audio-toggle-title']) {
+      const button = this.elements[id];
+      if (!button) continue;
+      button.textContent = this.audio.enabled ? '🔊 Ton an' : '🔇 Ton aus';
+      button.setAttribute('aria-pressed', String(this.audio.enabled));
+      button.title = this.audio.enabled ? 'Ton ausschalten' : 'Ton einschalten';
+    }
   }
 
   updateUI() {
@@ -227,34 +353,168 @@ export class ToborApp {
   }
 
   renderInventory() {
-    const entries = [...this.engine.inventory.values()];
-    this.elements['inventory-count'].textContent = `${entries.length} ${entries.length === 1 ? 'Ding' : 'Dinge'}`;
-    const renderEntry = (item, large = false) => {
+    const rawEntries = [...this.engine.inventory.values()];
+    this.elements['inventory-count'].textContent = `${rawEntries.length} ${rawEntries.length === 1 ? 'Ding' : 'Dinge'}`;
+    this.elements.inventory.innerHTML = rawEntries.slice(0, 18).map((item) => {
       const sprite = spriteFor(item.id);
-      const label = this.gameData.text(item.id, item.id.replace(/^OBJ_/, '').replaceAll('_', ' '));
-      const iconStyle = `--sx:${-sprite.x * 2}px;--sy:${-sprite.y * 2}px`;
-      if (!large) return `<button class="inventory-slot" data-item="${item.id}" title="${label}"><span class="item-sprite" style="${iconStyle}"></span>${item.count > 1 ? `<b>${item.count}</b>` : ''}</button>`;
-      const look = this.engine.inventoryHas('OBJ_EXCLAMATION_MARK') ? `<button data-look-item="${item.id}">Ansehen</button>` : '';
-      const clone = this.engine.inventoryHas('OBJ_CLONE') && item.id !== 'OBJ_CLONE' ? `<button data-clone-item="${item.id}">Klonen</button>` : '';
-      return `<article class="inventory-item"><span class="item-sprite item-sprite--large" style="${iconStyle}"></span><div><strong>${label}</strong><small>${item.count}× im Rucksack</small></div><div class="inventory-actions"><button data-use-item="${item.id}">Benutzen</button><button data-drop-item="${item.id}">Ablegen</button>${look}${clone}</div></article>`;
-    };
-    this.elements.inventory.innerHTML = entries.slice(0, 18).map((item) => renderEntry(item)).join('') || '<p class="empty-note">Noch leer</p>';
-    this.elements['inventory-large'].innerHTML = entries.map((item) => renderEntry(item, true)).join('') || '<p class="empty-note">Der Rucksack ist noch leer.</p>';
-    this.elements.inventory.querySelectorAll('[data-item]').forEach((button) => button.addEventListener('click', () => this.toggleInventory(true)));
-    const bindAction = (attribute, action) => {
-      this.elements['inventory-large'].querySelectorAll(`[${attribute}]`).forEach((button) => {
-        button.addEventListener('click', () => {
-          const id = button.getAttribute(attribute);
-          this.toggleInventory(false);
-          action(id);
-          this.renderInventory();
-        });
+      const label = this.itemLabel(item.id);
+      return `<button class="inventory-slot" data-quick-inventory title="${escapeHtml(label)}"><span class="item-sprite" style="--sx:${-sprite.x * 2}px;--sy:${-sprite.y * 2}px"></span>${item.count > 1 ? `<b>${item.count}</b>` : ''}</button>`;
+    }).join('') || '<p class="empty-note">Noch leer</p>';
+    this.elements.inventory.querySelectorAll('[data-quick-inventory]').forEach((button) => {
+      button.addEventListener('click', () => this.toggleInventory(true));
+    });
+
+    const groups = new Map();
+    for (const item of rawEntries) {
+      const group = itemGroup(item.id);
+      if (!groups.has(group)) groups.set(group, []);
+      groups.get(group).push(item);
+    }
+    const groupItems = this.inventoryGroup ? groups.get(this.inventoryGroup) : null;
+    if (this.inventoryGroup && !groupItems) this.inventoryGroup = null;
+    this.inventoryEntries = this.inventoryGroup
+      ? groupItems.map((item) => this.makeInventoryEntry(itemGroup(item.id), [item]))
+      : [...groups.entries()].map(([group, items]) => this.makeInventoryEntry(group, items));
+
+    this.inventoryIndex = Math.max(0, Math.min(this.inventoryIndex, this.inventoryEntries.length - 1));
+    const selected = this.inventoryEntries[this.inventoryIndex];
+    this.inventoryActions = this.actionsForInventoryEntry(selected);
+    this.inventoryActionIndex = Math.max(0, Math.min(this.inventoryActionIndex, this.inventoryActions.length - 1));
+    this.elements['inventory-caption'].textContent = this.inventoryGroup
+      ? `${this.itemLabel(this.inventoryGroup)} · Untergruppe`
+      : 'Rucksack';
+    this.elements['inventory-back'].hidden = !this.inventoryGroup;
+
+    this.elements['inventory-large'].innerHTML = this.inventoryEntries.map((entry, index) => {
+      const sprite = this.inventorySprite(entry);
+      const selectedClass = index === this.inventoryIndex ? ' is-selected' : '';
+      const groupClass = entry.grouped ? ' is-group' : '';
+      return `<button class="tobor-inventory-slot${selectedClass}${groupClass}" data-inventory-index="${index}" title="${escapeHtml(entry.label)}" aria-selected="${index === this.inventoryIndex}"><span class="item-sprite" style="--sx:${-sprite.x * 2}px;--sy:${-sprite.y * 2}px"></span>${entry.count > 1 ? `<b>${entry.count}</b>` : ''}</button>`;
+    }).join('');
+    this.elements['inventory-large'].querySelectorAll('[data-inventory-index]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const index = Number(button.dataset.inventoryIndex);
+        this.inventoryIndex = index;
+        this.inventoryActionIndex = 0;
+        const entry = this.inventoryEntries[index];
+        if (entry.grouped) this.enterInventoryGroup(entry.group);
+        else this.renderInventory();
       });
+    });
+
+    if (!selected) {
+      this.elements['inventory-actions'].innerHTML = '';
+      return;
+    }
+    const countLine = selected.count > 1 ? `<span class="inventory-action-count">${selected.count} Stück</span>` : '';
+    this.elements['inventory-actions'].innerHTML = `<strong>${escapeHtml(selected.label)}</strong>${countLine}${this.inventoryActions.map((action, index) => `<button class="${index === this.inventoryActionIndex ? 'is-selected' : ''}" data-inventory-action="${index}">${escapeHtml(action.label)}</button>`).join('')}`;
+    this.elements['inventory-actions'].querySelectorAll('[data-inventory-action]').forEach((button) => {
+      button.addEventListener('click', () => {
+        this.inventoryActionIndex = Number(button.dataset.inventoryAction);
+        this.activateInventorySelection();
+      });
+    });
+    requestAnimationFrame(() => this.positionInventoryActions());
+  }
+
+  itemLabel(id) {
+    const group = itemGroup(id);
+    const fallback = group.replace(/^OBJ_/, '').replaceAll('_', ' ');
+    return this.gameData.text(id, this.gameData.text(group, fallback));
+  }
+
+  makeInventoryEntry(group, items) {
+    const count = items.reduce((sum, item) => sum + item.count, 0);
+    return {
+      group,
+      items,
+      grouped: items.length > 1,
+      item: items[0],
+      count,
+      label: this.itemLabel(items.length === 1 ? items[0].id : group),
     };
-    bindAction('data-use-item', (id) => this.engine.useItem(id));
-    bindAction('data-drop-item', (id) => this.engine.dropItem(id));
-    bindAction('data-look-item', (id) => this.engine.lookItem(id));
-    bindAction('data-clone-item', (id) => this.engine.cloneItem(id));
+  }
+
+  inventorySprite(entry) {
+    if (entry.grouped && entry.group === 'OBJ_KEY') return { x: 224, y: 48 };
+    if (entry.grouped && entry.group === 'OBJ_MUNITION') return { x: 224, y: 60 };
+    return spriteFor(entry.item.id);
+  }
+
+  actionsForInventoryEntry(entry) {
+    if (!entry) return [];
+    if (entry.grouped) {
+      const actions = [{ label: 'Auswählen', run: () => this.enterInventoryGroup(entry.group) }];
+      if (entry.group === 'OBJ_MUNITION') {
+        actions.push({ label: 'Alle ablegen', run: () => this.performInventoryAction(() => {
+          for (const item of entry.items) this.dropAllOf(item.id);
+        }) });
+      }
+      return actions;
+    }
+    const id = entry.item.id;
+    const actions = [
+      { label: 'Benutzen', run: () => this.performInventoryAction(() => this.engine.useItem(id)) },
+      { label: 'Ablegen', run: () => this.performInventoryAction(() => this.engine.dropItem(id)) },
+    ];
+    if (entry.group === 'OBJ_MUNITION' && entry.count > 1) {
+      actions.push({ label: 'Alle ablegen', run: () => this.performInventoryAction(() => this.dropAllOf(id)) });
+    }
+    if (this.engine.inventoryHas('OBJ_CLONE') && id !== 'OBJ_CLONE') {
+      actions.push({ label: 'Klonen', run: () => this.performInventoryAction(() => this.engine.cloneItem(id)) });
+    }
+    if (this.engine.inventoryHas('OBJ_EXCLAMATION_MARK')) {
+      actions.push({ label: 'Ansehen', run: () => this.performInventoryAction(() => this.engine.lookItem(id)) });
+    }
+    return actions;
+  }
+
+  dropAllOf(id) {
+    const count = this.engine.inventoryCount(id);
+    for (let index = 0; index < count; index += 1) {
+      if (!this.engine.dropItem(id)) break;
+    }
+  }
+
+  activateInventorySelection() {
+    this.inventoryActions[this.inventoryActionIndex]?.run();
+  }
+
+  performInventoryAction(action) {
+    this.toggleInventory(false);
+    action();
+    this.renderInventory();
+  }
+
+  enterInventoryGroup(group) {
+    this.inventoryGroup = group;
+    this.inventoryIndex = 0;
+    this.inventoryActionIndex = 0;
+    this.renderInventory();
+  }
+
+  leaveInventoryGroup() {
+    if (!this.inventoryGroup) {
+      this.toggleInventory(false);
+      return;
+    }
+    this.inventoryGroup = null;
+    this.inventoryIndex = 0;
+    this.inventoryActionIndex = 0;
+    this.renderInventory();
+  }
+
+  positionInventoryActions() {
+    if (this.elements['inventory-overlay'].hidden) return;
+    const selected = this.elements['inventory-large'].querySelector('.is-selected');
+    if (!selected) return;
+    const overlayRect = this.elements['inventory-overlay'].getBoundingClientRect();
+    const selectedRect = selected.getBoundingClientRect();
+    const menu = this.elements['inventory-actions'];
+    const idealLeft = selectedRect.left - overlayRect.left + selectedRect.width / 2;
+    const halfWidth = menu.offsetWidth / 2;
+    const left = Math.max(halfWidth + 6, Math.min(overlayRect.width - halfWidth - 6, idealLeft));
+    menu.style.left = `${left}px`;
   }
 
   renderMiniMap() {
@@ -366,16 +626,35 @@ export class ToborApp {
   }
 
   closeDialog() {
+    const returnToTitle = this.returnToTitleAfterDialog;
+    this.returnToTitleAfterDialog = false;
     this.elements['dialog-backdrop'].hidden = true;
+    if (returnToTitle) {
+      this.returnToTitle();
+      return;
+    }
     if (this.engine) this.engine.paused = this.dialogWasPaused;
   }
 
   toggleInventory(open) {
     if (!this.engine) return;
+    if (open && this.engine.motion) {
+      this.showToast('Bleib kurz stehen, um den Rucksack zu öffnen.');
+      return;
+    }
+    if (open && this.engine.inventory.size === 0) {
+      this.showToast('Der Rucksack ist noch leer.');
+      return;
+    }
     this.clearInput();
     this.elements['inventory-overlay'].hidden = !open;
     this.engine.paused = open || !this.elements['map-overlay'].hidden || !this.elements['dialog-backdrop'].hidden;
-    if (open) this.renderInventory();
+    if (open) {
+      this.inventoryGroup = null;
+      this.inventoryIndex = 0;
+      this.inventoryActionIndex = 0;
+      this.renderInventory();
+    }
   }
 
   toggleMap(open) {
@@ -395,6 +674,7 @@ export class ToborApp {
     this.elements['map-overlay'].hidden = true;
     this.elements['inspect-overlay'].hidden = true;
     this.inspectMode = false;
+    this.returnToTitleAfterDialog = false;
     if (this.engine) this.engine.paused = false;
   }
 }

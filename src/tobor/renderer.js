@@ -213,7 +213,8 @@ export class ToborRenderer {
       return;
     }
     if (object.id === 'OBJ_EXPLOSION') {
-      const frame = Math.min(5, Math.floor((object._explosionTime ?? this.time) * 2.5) % 6);
+      const duration = object._explosionDuration ?? 2.5;
+      const frame = Math.min(5, Math.floor(((object._explosionTime ?? 0) / duration) * 6));
       this.drawSprite(context, tile(64 + frame * 16, 0), object.renderX ?? object.x, object.renderY ?? object.y);
       return;
     }

@@ -14,7 +14,9 @@ import {
 } from './object-registry.js';
 
 const SAVE_KEY = 'rokor-tobor-save-v2';
+const CLOCK_SAVE_KEY = 'rokor-tobor-clock-save-v1';
 const SETTINGS_KEY = 'rokor-tobor-settings-v2';
+const EXPLOSION_DURATION = 2.5;
 
 export const SPEED_PRESETS = {
   verySlow: { label: 'Sehr langsam', tilesPerSecond: 4 },
@@ -137,6 +139,7 @@ export class ToborEngine {
     this.heldDirections = [];
     this.speedPreset = this.loadSpeedPreset();
     this.motion = null;
+    this.death = null;
     this.lastDirection = null;
     this.inputLockedUntil = 0;
     this.roomVersion = 0;
@@ -144,6 +147,7 @@ export class ToborEngine {
     this.respawn = null;
     this.spawnSequence = 0;
     this.switchSequence = 0;
+    this.autosaveTimer = null;
     this.resetRooms();
   }
 
@@ -194,6 +198,7 @@ export class ToborEngine {
     this.won = false;
     this.lost = false;
     this.motion = null;
+    this.death = null;
     this.heldDirections = [];
 
     const start = [...this.rooms.values()]
@@ -213,31 +218,68 @@ export class ToborEngine {
   }
 
   hasSave() {
+    return this.hasStoredSave(SAVE_KEY);
+  }
+
+  hasClockSave() {
+    return this.hasStoredSave(CLOCK_SAVE_KEY);
+  }
+
+  hasStoredSave(key) {
     try {
-      return Boolean(localStorage.getItem(SAVE_KEY));
+      const raw = localStorage.getItem(key);
+      if (!raw) return false;
+      const data = JSON.parse(raw);
+      return key !== SAVE_KEY || (!data.lost && Number(data.lives ?? 1) > 0);
     } catch {
       return false;
     }
   }
 
-  save() {
-    if (!this.currentRoom) return;
+  clearAutosave() {
+    if (this.autosaveTimer) {
+      clearTimeout(this.autosaveTimer);
+      this.autosaveTimer = null;
+    }
+    try {
+      localStorage.removeItem(SAVE_KEY);
+    } catch {
+      // The game can still end normally when browser storage is unavailable.
+    }
+  }
+
+  save({ clock = false } = {}) {
+    if (!this.currentRoom) return false;
+    if (this.lost && !clock) {
+      this.clearAutosave();
+      return false;
+    }
+    if (this.autosaveTimer) {
+      clearTimeout(this.autosaveTimer);
+      this.autosaveTimer = null;
+    }
     const changedRooms = {};
     for (const [id, room] of this.rooms) {
       const source = this.game.rooms.get(id);
-      const changed = room.objects.some((object, index) => {
+      const persistentObjects = room.objects.filter((object) => object.id !== 'OBJ_EXPLOSION');
+      const changed = persistentObjects.some((object, index) => {
         const original = source.objects[index];
         return !original || object.alive !== original.alive || object.id !== original.id
           || object.type !== original.type || object.flag !== original.flag
           || object.subType !== original.subType || object.drift !== original.drift
           || object.content !== original.content || object.x !== original.x || object.y !== original.y;
       });
-      if (changed || room.treeTimer > 0) changedRooms[id] = { objects: room.objects, treeTimer: room.treeTimer };
+      if (changed || room.treeTimer > 0) changedRooms[id] = { objects: persistentObjects, treeTimer: room.treeTimer };
     }
+    const savedPlayer = this.death && this.respawn?.roomId === this.currentRoom.id
+      ? { ...this.player, x: this.respawn.x, y: this.respawn.y, moving: false, visible: true }
+      : this.player;
     const data = {
-      version: 3,
+      version: 4,
+      savedAt: Date.now(),
+      saveType: clock ? 'clock' : 'auto',
       roomId: this.currentRoom.id,
-      player: this.player,
+      player: savedPlayer,
       inventory: [...this.inventory.entries()],
       visitedRooms: [...this.visitedRooms],
       firstUse: [...this.firstUse],
@@ -248,20 +290,51 @@ export class ToborEngine {
       garlic: this.garlic,
       food: this.food,
       won: this.won,
+      lost: this.lost,
       changedRooms,
     };
     try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      const serialized = JSON.stringify(data);
+      if (clock) localStorage.setItem(CLOCK_SAVE_KEY, serialized);
+      localStorage.setItem(SAVE_KEY, serialized);
+      return true;
     } catch {
       // The running game remains usable without storage.
+      return false;
     }
   }
 
+  scheduleAutosave() {
+    if (this.autosaveTimer) clearTimeout(this.autosaveTimer);
+    this.autosaveTimer = setTimeout(() => {
+      this.autosaveTimer = null;
+      this.save();
+    }, 220);
+    this.autosaveTimer.unref?.();
+  }
+
   load() {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) return false;
-    const data = JSON.parse(raw);
-    if (![2, 3].includes(data.version) || !this.rooms.has(data.roomId)) return false;
+    return this.loadStoredSave(SAVE_KEY);
+  }
+
+  loadClockSave() {
+    return this.loadStoredSave(CLOCK_SAVE_KEY);
+  }
+
+  loadStoredSave(key) {
+    let data;
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return false;
+      data = JSON.parse(raw);
+    } catch {
+      return false;
+    }
+    if (![2, 3, 4].includes(data.version) || !this.rooms.has(data.roomId)) return false;
+    if (key === SAVE_KEY && (data.lost || Number(data.lives ?? 1) <= 0)) {
+      this.clearAutosave();
+      return false;
+    }
     this.resetRooms();
     for (const [roomId, savedRoom] of Object.entries(data.changedRooms ?? {})) {
       if (!this.rooms.has(roomId)) continue;
@@ -289,7 +362,9 @@ export class ToborEngine {
     this.garlic = data.garlic ?? 0;
     this.food = data.food ?? 0;
     this.won = Boolean(data.won);
+    this.lost = Boolean(data.lost);
     this.motion = null;
+    this.death = null;
     this.enterRoom(this.currentRoom, { announce: true, processCell: false });
     return true;
   }
@@ -396,6 +471,10 @@ export class ToborEngine {
 
   update(deltaSeconds) {
     this.time += deltaSeconds;
+    if (this.death) {
+      this.updatePlayerDeath(deltaSeconds);
+      return;
+    }
     if (this.paused || this.won || this.lost || !this.currentRoom) return;
     this.garlic = Math.max(0, this.garlic - deltaSeconds);
     this.food = Math.max(0, this.food - deltaSeconds);
@@ -420,6 +499,15 @@ export class ToborEngine {
     this.player.y = fromY + (toY - fromY) * progress;
     this.player.walkPhase += distance;
 
+    if (this.motion.tunnel) {
+      const remaining = (this.motion.distance ?? 0) * (1 - progress);
+      const step = Math.floor(Math.max(0, remaining));
+      while (step < this.motion.tunnelLastStep) {
+        this.motion.tunnelLastStep -= 1;
+        this.emit('sound', { name: 'tunnel-step', volume: 0.34 });
+      }
+    }
+
     if (progress >= 1) this.finishMove();
   }
 
@@ -439,6 +527,7 @@ export class ToborEngine {
       if (object.id === 'OBJ_ANDROID_EGG') this.updateAndroidEgg(object, deltaSeconds);
       if (object.id === 'OBJ_WATCHER') this.updateWatcher(object, deltaSeconds);
       if (object.id === 'OBJ_TORCH') this.updateTorch(object, deltaSeconds);
+      if (object.id === 'OBJ_EXPLOSION') this.updateExplosion(object, deltaSeconds);
       if (object.id === 'OBJ_WALL_DISSOLVE' || object.id === 'OBJ_WALL_SAND_DISSOLVE') {
         object._dissolveTime = (object._dissolveTime ?? 5) - deltaSeconds;
         if (object._dissolveTime <= 0) {
@@ -537,6 +626,23 @@ export class ToborEngine {
     }
   }
 
+  updateExplosion(explosion, deltaSeconds) {
+    if (explosion.alive === false) return false;
+    explosion._explosionTime = (explosion._explosionTime ?? 0) + deltaSeconds;
+    if (explosion._explosionTime < (explosion._explosionDuration ?? EXPLOSION_DURATION)) return true;
+    explosion.alive = false;
+    this.roomVersion += 1;
+    return false;
+  }
+
+  spawnExplosion(x, y, overrides = {}) {
+    return this.spawnObject('OBJ_EXPLOSION', x, y, {
+      _explosionTime: 0,
+      _explosionDuration: EXPLOSION_DURATION,
+      ...overrides,
+    });
+  }
+
   updateBullets(deltaSeconds) {
     const speedScale = SPEED_PRESETS[this.speedPreset].tilesPerSecond / 8;
     for (const bullet of [...this.roomObjects()].filter((object) => object.id === 'OBJ_BULLET')) {
@@ -569,6 +675,7 @@ export class ToborEngine {
   fireBullet(x, y, direction, speed = BULLET_SPEED) {
     const vector = typeof direction === 'string' ? DIRECTIONS[direction] : direction;
     if (!vector) return null;
+    this.emit('sound', { name: 'shoot-bullet', volume: 0.34 });
     return this.spawnObject('OBJ_BULLET', x, y, {
       _direction: { x: vector.x, y: vector.y },
       _bulletSpeed: speed,
@@ -587,9 +694,11 @@ export class ToborEngine {
       for (const actor of actors) {
         if (actor.id === 'OBJ_SCORPION' && actor.type <= 0) continue;
         actor.alive = false;
+        this.spawnExplosion(actor.x, actor.y);
         bullet.alive = false;
       }
       if (!bullet.alive) {
+        this.emit('sound', { name: 'explosion-enemy', volume: 0.42 });
         this.roomVersion += 1;
         return;
       }
@@ -608,6 +717,7 @@ export class ToborEngine {
         bullet.alive = false;
       } else if (object.id === 'OBJ_ELECTRIC_FENCE' || object.id === 'OBJ_ELECTRIC_FENCE_OFF' || object.id === 'OBJ_SKULL') {
         object.alive = false;
+        this.spawnExplosion(object.x, object.y);
         bullet.alive = false;
         this.roomVersion += 1;
       } else if (object.id === 'OBJ_TARGET') {
@@ -724,6 +834,8 @@ export class ToborEngine {
         actor._stress = (actor._stress ?? 0) + (moved ? -1 : 1);
         if (actor._stress > 150) {
           actor.alive = false;
+          this.spawnExplosion(actor.x, actor.y);
+          this.emit('sound', { name: 'explosion-enemy', volume: 0.38 });
           this.roomVersion += 1;
         }
       }
@@ -734,6 +846,8 @@ export class ToborEngine {
       const freeTiles = AI_DIRECTIONS.filter((direction) => this.actorCanEnter(actor, direction)).length;
       if (freeTiles === 0) {
         actor.alive = false;
+        this.spawnExplosion(actor.x, actor.y);
+        this.emit('sound', { name: 'explosion-enemy', volume: 0.38 });
         this.roomVersion += 1;
         return;
       }
@@ -796,6 +910,11 @@ export class ToborEngine {
     };
     if (actor.id === 'OBJ_ANDROID') actor.type = (actor.type + 1) % 3;
     actor._lastDirection = { x: direction.x, y: direction.y };
+    if (actor.id === 'OBJ_DOPPELGANGER') {
+      this.emit('sound', { name: 'charlie-step', volume: 0.2 });
+    } else if (actor.id !== 'OBJ_SHARK') {
+      this.emit('sound', { name: 'robot-step', volume: 0.2 });
+    }
     return true;
   }
 
@@ -951,9 +1070,13 @@ export class ToborEngine {
         object.alive = false;
         actor.alive = false;
       }
-      if (object.id === 'OBJ_DOPPELGANGER' && isEnemy(actor.id)) object.alive = false;
+      if (object.id === 'OBJ_DOPPELGANGER' && isEnemy(actor.id) && object.alive !== false) {
+        object.alive = false;
+        this.spawnExplosion(object.x, object.y);
+        this.emit('sound', { name: 'explosion-enemy', volume: 0.38 });
+      }
       if (object.id === 'OBJ_ICE_DEADLY' && (actor.id === 'OBJ_ROBOT' || actor.id === 'OBJ_ANDROID')) actor.alive = false;
-      if (object.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')) this.pressFloorPlate(object);
+      if (object.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')) this.pressFloorPlate(object, actor);
       if (object.id === 'OBJ_GROUND_NEST' && actor.id !== 'OBJ_ANDROID') {
         this.spawnObject('OBJ_ROBOT', object.x, object.y, { justSpawned: true });
         object.alive = false;
@@ -983,6 +1106,8 @@ export class ToborEngine {
       }
     }
     if (!actor.alive) {
+      this.spawnExplosion(actor.x, actor.y);
+      this.emit('sound', { name: 'explosion-enemy', volume: 0.38 });
       this.roomVersion += 1;
       this.emit('state');
     }
@@ -1076,6 +1201,11 @@ export class ToborEngine {
     this.player.facing = direction;
     this.player.moving = true;
     this.lastDirection = direction;
+    const startsInWater = this.objectsAt(fromX, fromY).some((object) => isWater(object.id));
+    if (!startsInWater) this.emit('sound', { name: 'charlie-step', volume: 0.34 });
+    if (targetObjects.some((object) => object.id.startsWith('OBJ_DOOR#') && this.inventoryHas(`OBJ_KEY#${object.type}`))) {
+      this.emit('sound', { name: 'open-door', volume: 0.46 });
+    }
     this.onLeaveCell(fromX, fromY);
     return true;
   }
@@ -1086,12 +1216,19 @@ export class ToborEngine {
     this.player.y = completed.toY;
     this.motion = null;
     this.player.moving = false;
-    if (completed.tunnel) this.player.visible = true;
+    if (completed.tunnel) {
+      this.player.visible = true;
+      this.emit('sound', { name: 'tunnel-step', volume: 0.34 });
+    }
     this.onEnterCell(completed.toX, completed.toY, completed.direction);
     if (completed.tunnel && !this.motion) {
       this.roomVersion += 1;
       this.save();
       this.emit('state');
+    }
+    if (!completed.tunnel && !this.motion) {
+      const endsInWater = this.objectsAt(completed.toX, completed.toY).some((object) => isWater(object.id));
+      if (!endsInWater) this.emit('sound', { name: 'charlie-step', volume: 0.34 });
     }
     if (!this.currentRoom || this.paused || this.won || this.lost || this.motion) return;
     const held = this.preferredHeldDirection();
@@ -1112,11 +1249,21 @@ export class ToborEngine {
       || ['OBJ_NPC', 'OBJ_DEALER', 'OBJ_DOPPELGANGER'].includes(object.id);
   }
 
-  pressFloorPlate(plate) {
+  pressFloorPlate(plate, mover = this.player) {
+    if (mover !== this.player && (mover?.alive === false || !this.isHeavyObject(mover))) return;
     if (plate.flag == null || plate.flag < 0 || plate.type === 1) return;
     plate.type = 1;
     plate.id = 'OBJ_ELECTRIC_FLOOR_PLATE_1';
     this.switchFlag(plate.flag, plate);
+  }
+
+  destroyIceBlock(ice) {
+    if (!ice || ice.id !== 'OBJ_ICE_BLOCK' || ice.alive === false) return false;
+    // Tobor informs every object below a dying ice block that it has left the
+    // cell. This is what releases a floor plate when the block melts in place.
+    ice.alive = false;
+    this.onLeaveCell(ice.x, ice.y, ice);
+    return true;
   }
 
   releaseFloorPlate(plate, mover = null) {
@@ -1148,7 +1295,7 @@ export class ToborEngine {
       } else if (object.id.startsWith('OBJ_BAGPACK#') && this.inventoryHas(object.id)) {
         // Tobor permits only one backpack of the same kind at a time.
       } else if (isCollectible(object.id)) this.collect(object);
-      if (object.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')) this.pressFloorPlate(object);
+      if (object.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')) this.pressFloorPlate(object, this.player);
       if ((object.id === 'OBJ_WATER_DEADLY' && !(this.game.metadata.ringEffects && this.inventoryHas('OBJ_RING#1'))) || object.id === 'OBJ_ICE_DEADLY') {
         this.killPlayer(object.id);
         return;
@@ -1181,16 +1328,24 @@ export class ToborEngine {
         object.id = 'OBJ_GRASS_1';
         object.type = 1;
       }
-      if (object.id === 'OBJ_SAND_PLANT_0' && this.inventoryHas('OBJ_KNIFE')) object.alive = false;
+      if (object.id === 'OBJ_SAND_PLANT_0' && this.inventoryHas('OBJ_KNIFE')) {
+        object.alive = false;
+        this.emit('sound', { name: 'hit-plant', volume: 0.4 });
+      }
       if (object.id === 'OBJ_SAND_PLANT_1') {
         object.id = 'OBJ_SAND_PLANT_2';
         object.type = 2;
+        this.emit('sound', { name: 'hit-plant', volume: 0.4 });
       }
       if (object.id === 'OBJ_PLANT' && this.inventoryHas('OBJ_SICKLE')) {
         object.alive = false;
+        this.emit('sound', { name: 'hit-plant', volume: 0.4 });
         if (Math.random() < 0.25) this.spawnPlantShoots(object.x, object.y);
       }
-      if (object.id === 'OBJ_PLANT_GROWING' && this.inventoryHas('OBJ_SICKLE')) object.alive = false;
+      if (object.id === 'OBJ_PLANT_GROWING' && this.inventoryHas('OBJ_SICKLE')) {
+        object.alive = false;
+        this.emit('sound', { name: 'hit-plant', volume: 0.4 });
+      }
       if (object.id.startsWith('OBJ_STAIRS_')) {
         this.useStairs(object);
         return;
@@ -1233,7 +1388,7 @@ export class ToborEngine {
       }
     }
     this.roomVersion += 1;
-    this.save();
+    this.scheduleAutosave();
     this.emit('state');
   }
 
@@ -1312,13 +1467,19 @@ export class ToborEngine {
         object.alive = false;
         water.alive = false;
         this.spawnObject('OBJ_ISOLATOR_WATER', targetX, targetY);
+      } else if (object.id === 'OBJ_ICE_BLOCK') {
+        this.destroyIceBlock(object);
       } else {
         object.alive = false;
       }
     }
-    for (const entry of targetObjects) {
-      if (entry.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')) this.pressFloorPlate(entry);
-      if (entry.id === 'OBJ_THERMOPLATE_0' && object.id === 'OBJ_ICE_BLOCK') object.alive = false;
+    if (targetObjects.some((entry) => entry.id === 'OBJ_THERMOPLATE_0') && object.id === 'OBJ_ICE_BLOCK') {
+      this.destroyIceBlock(object);
+    }
+    if (object.alive !== false) {
+      for (const entry of targetObjects) {
+        if (entry.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')) this.pressFloorPlate(entry, object);
+      }
     }
     this.roomVersion += 1;
     return true;
@@ -1327,6 +1488,7 @@ export class ToborEngine {
   collect(object) {
     const id = object.id;
     if (id.startsWith('OBJ_MUNITION#')) {
+      this.emit('sound', { name: 'pickup-misc' });
       const rest = this.addAmmunition(Number(id.split('#')[1]) + 1);
       if (!this.firstUse.has('OBJ_MUNITION_PICKUP')) {
         this.firstUse.add('OBJ_MUNITION_PICKUP');
@@ -1345,7 +1507,9 @@ export class ToborEngine {
     if (id === 'OBJ_GOLD') {
       if (this.gold >= 150) return;
       this.gold += 1;
+      this.emit('sound', { name: 'pickup-gold', volume: 0.4 });
     } else if (id.startsWith('OBJ_DIAMOND#')) {
+      this.emit('sound', { name: 'pickup-misc' });
       this.diamonds += 1;
       this.points += 5000;
       this.emit('status', { message: 'Diamant gefunden · 5.000 Punkte' });
@@ -1362,6 +1526,7 @@ export class ToborEngine {
     } else if (id === 'OBJ_PLATIN') {
       // Platin is a score/collection object without inventory entry in Tobor.
     } else if (id === 'OBJ_DOPPELGANGER_ITEM') {
+      this.emit('sound', { name: 'doppelganger', volume: 0.42 });
       this.spawnObject('OBJ_DOPPELGANGER', object.x, object.y);
       if (!this.firstUse.has('USED_DOPPELGANGER')) {
         this.firstUse.add('USED_DOPPELGANGER');
@@ -1372,6 +1537,7 @@ export class ToborEngine {
         });
       }
     } else if (id.startsWith('OBJ_KEY#')) {
+      this.emit('sound', { name: this.firstUse.has('OBJ_KEY_PICKUP') ? 'pickup-key' : 'jingle-1', volume: 0.42 });
       this.addInventory(id, object.content);
       if (!this.firstUse.has('OBJ_KEY_PICKUP')) {
         this.firstUse.add('OBJ_KEY_PICKUP');
@@ -1384,9 +1550,14 @@ export class ToborEngine {
     } else if (id.startsWith('OBJ_DIAMOND#')) {
       // handled above
     } else if (!id.startsWith('OBJ_DIAMOND#')) {
+      const pickupKey = `${id.split('#')[0]}_PICKUP`;
+      const firstPickup = !this.firstUse.has(pickupKey);
+      this.emit('sound', {
+        name: firstPickup && (id === 'OBJ_SHOES' || id.startsWith('OBJ_RING#')) ? 'jingle-1' : 'pickup-misc',
+        volume: 0.44,
+      });
       this.addInventory(id, object.content);
       if (id.startsWith('OBJ_MAGNET#')) this.rotateArrowsForMagnet(object.type, object.x, object.y, true);
-      const pickupKey = `${id.split('#')[0]}_PICKUP`;
       const message = this.text(pickupKey, 'Gegenstand aufgenommen');
       if (!this.firstUse.has(pickupKey)) {
         this.firstUse.add(pickupKey);
@@ -1442,6 +1613,7 @@ export class ToborEngine {
 
   switchFlag(flag, source) {
     if (flag == null || flag < 0) return;
+    this.emit('sound', { name: 'switch', volume: 0.38 });
     const activationId = this.switchSequence += 1;
     for (const object of this.roomObjects()) {
       if (object === source || object.flag !== flag) continue;
@@ -1482,7 +1654,7 @@ export class ToborEngine {
           object.id = 'OBJ_THERMOPLATE_0';
           for (const ice of this.roomObjects().filter((entry) => entry.id === 'OBJ_ICE_BLOCK')) {
             if ((ice.flag === object.flag && ice._electricActivation !== activationId)
-              || (ice.x === object.x && ice.y === object.y)) ice.alive = false;
+              || (ice.x === object.x && ice.y === object.y)) this.destroyIceBlock(ice);
           }
         }
       } else if (object.id.startsWith('OBJ_WATER_') && object.drift >= 0) {
@@ -1526,9 +1698,10 @@ export class ToborEngine {
     }
     this.currentRoom = room;
     this.respawn = { roomId: room.id, x: this.player.x, y: this.player.y };
+    const firstVisit = !this.visitedRooms.has(room.id);
     this.visitedRooms.add(room.id);
     this.roomVersion += 1;
-    if (announce) this.emit('room', { room, name: this.game.roomName(room) });
+    if (announce) this.emit('room', { room, name: this.game.roomName(room), firstVisit });
     if (processCell) this.onEnterCell(Math.round(this.player.x), Math.round(this.player.y), this.player.facing);
     this.emit('state');
   }
@@ -1606,12 +1779,13 @@ export class ToborEngine {
       paused: false,
       forced: true,
       tunnel: true,
+      tunnelLastStep: Math.floor(distance),
       water: false,
       speedFactor: 0.5,
     };
     this.player.visible = false;
     this.player.moving = true;
-    this.emit('status', { message: 'Du folgst dem verborgenen Tunnel.' });
+    this.emit('sound', { name: 'tunnel-step', volume: 0.34 });
     return true;
   }
 
@@ -1632,13 +1806,37 @@ export class ToborEngine {
   }
 
   killPlayer(cause) {
-    if (this.lost) return;
+    if (this.lost || this.death) return;
+    const explosion = this.spawnExplosion(Math.round(this.player.x), Math.round(this.player.y), { _playerDeath: true });
+    this.emit('sound', { name: 'explosion-player', volume: 0.52 });
     this.lives -= 1;
     this.clearInput();
     this.motion = null;
+    this.player.moving = false;
+    this.player.visible = false;
+    this.death = { cause, explosion };
+    if (this.autosaveTimer) {
+      clearTimeout(this.autosaveTimer);
+      this.autosaveTimer = null;
+    }
+    this.roomVersion += 1;
+    if (this.lives <= 0) this.clearAutosave();
+    else this.save();
+    this.emit('state');
+  }
+
+  updatePlayerDeath(deltaSeconds) {
+    if (this.updateExplosion(this.death.explosion, deltaSeconds)) return;
+    const { cause } = this.death;
+    this.death = null;
     if (this.lives <= 0) {
       this.lost = true;
-      this.emit('lose', { title: 'Episode verloren', text: this.text('TXT_EPISODE_LOST', 'Versuche es noch einmal.') });
+      this.clearAutosave();
+      this.emit('state');
+      this.emit('lose', {
+        title: 'Episode verloren',
+        text: `${this.text('TXT_EPISODE_LOST', 'Versuche es noch einmal.')}\n\nLade einen Uhr-Spielstand oder beginne ein neues Abenteuer.`,
+      });
       return;
     }
     if (this.respawn?.roomId === this.currentRoom.id) {
@@ -1652,6 +1850,9 @@ export class ToborEngine {
       }
     }
     this.player.visible = true;
+    this.player.moving = false;
+    this.save();
+    this.emit('state');
     this.emit('status', { message: `Ein Leben verloren (${cause.replace(/^OBJ_/, '')})` });
   }
 
@@ -1721,6 +1922,7 @@ export class ToborEngine {
     this.spawnObject(id, x, y, { type, content: item.content });
     this.removeInventory(id);
     if (id.startsWith('OBJ_MAGNET#')) {
+      this.emit('sound', { name: 'drop-magnet', volume: 0.42 });
       const rotated = this.rotateArrowsForMagnet(type, x, y, false);
       if (rotated > 0 && !this.firstUse.has('USED_MAGNET')) {
         this.firstUse.add('USED_MAGNET');
@@ -1798,6 +2000,7 @@ export class ToborEngine {
         wall.alive = false;
         this.spawnObject(wall.id === 'OBJ_SAND_WALL' ? 'OBJ_WALL_SAND_DISSOLVE' : 'OBJ_WALL_DISSOLVE', wall.x, wall.y, { _dissolveTime: 5 });
       });
+      this.emit('sound', { name: 'dissolve-wall', volume: 0.44 });
       this.removeInventory(id);
       this.points += this.firstUse.has('USED_ACID') ? 0 : 1500;
       this.firstUse.add('USED_ACID');
@@ -1818,6 +2021,7 @@ export class ToborEngine {
       this.removeInventory(id);
       this.addInventory('OBJ_BUCKET#0');
     } else if (id === 'OBJ_GARLIC') {
+      this.emit('sound', { name: 'use-garlic', volume: 0.46 });
       this.removeInventory(id);
       this.garlic += 60;
       if (!this.firstUse.has('USED_GARLIC')) this.points += 1000;
@@ -1875,8 +2079,14 @@ export class ToborEngine {
       return this.dropItem(id);
     } else if (id === 'OBJ_CLOCK') {
       this.removeInventory(id);
-      this.save();
-      this.emit('status', { message: 'Spielstand gespeichert.' });
+      if (!this.save({ clock: true })) {
+        this.addInventory(id, item.content);
+        this.emit('status', { message: 'Der Spielstand konnte nicht gespeichert werden.' });
+        this.emit('state');
+        return false;
+      }
+      this.emit('sound', { name: 'jingle-0', volume: 0.38 });
+      this.emit('status', { message: 'Uhr-Spielstand dauerhaft gespeichert.' });
       this.emit('state');
       return true;
     } else {

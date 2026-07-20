@@ -441,6 +441,19 @@ test('NPCs may start moving immediately and Tobor random movement includes diago
   assert.equal(npc._motion.toY, 9);
 });
 
+test('monster footsteps sound when movement starts instead of one tile late', () => {
+  const events = [];
+  const engine = new ToborEngine(fakeGame([object('OBJ_ROBOT', 5, 2)]), (event) => events.push(event));
+  engine.newGame();
+  events.length = 0;
+  const robot = engine.objectsAt(5, 2)[0];
+
+  assert.equal(engine.startActorMotion(robot, { x: 1, y: 0 }, 2), true);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'robot-step').length, 1);
+  engine.update(1);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'robot-step').length, 1);
+});
+
 test('NPCs never hurt Charlie and dealers release typed contents once after their cooldown', () => {
   const npc = object('OBJ_NPC', 2, 2, { flag: -1, _interactionCooldown: 0 });
   const dealer = object('OBJ_DEALER', 3, 2, { content: 'OBJ_KEY#7', _interactionCooldown: 0 });
@@ -525,13 +538,13 @@ test('a floor plate stays active only while a heavy entity holds it down', () =>
   assert.equal(engine.objectsAt(6, 6)[0].type, 0);
 });
 
-test('only Tobor-weighted inventory objects keep a floor plate pressed after Charlie leaves', () => {
+test('a filled bucket, but not an empty one, keeps a floor plate pressed after Charlie leaves', () => {
   const lightEngine = new ToborEngine(fakeGame([
     object('OBJ_ELECTRIC_FLOOR_PLATE_0', 2, 2, { type: 0, flag: 7 }),
   ]));
   lightEngine.newGame();
-  lightEngine.addInventory('OBJ_KEY#0');
-  assert.equal(lightEngine.dropItem('OBJ_KEY#0'), true);
+  lightEngine.addInventory('OBJ_BUCKET#0');
+  assert.equal(lightEngine.dropItem('OBJ_BUCKET#0'), true);
   lightEngine.pressDirection('right');
   assert.equal(lightEngine.objectsAt(2, 2).find((entry) => entry.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')).type, 0);
 
@@ -543,6 +556,56 @@ test('only Tobor-weighted inventory objects keep a floor plate pressed after Cha
   assert.equal(heavyEngine.dropItem('OBJ_BUCKET#1'), true);
   heavyEngine.pressDirection('right');
   assert.equal(heavyEngine.objectsAt(2, 2).find((entry) => entry.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_')).type, 1);
+});
+
+test('soft isolators are weightless while hard isolators activate floor plates', () => {
+  const softPlate = object('OBJ_ELECTRIC_FLOOR_PLATE_0', 5, 2, { type: 0, flag: 7 });
+  const softDoor = object('OBJ_ELECTRIC_DOOR_0', 8, 8, { type: 0, flag: 7 });
+  const hard = object('OBJ_ISOLATOR', 3, 2);
+  const soft = object('OBJ_ISOLATOR_SOFT', 4, 2);
+  const softEngine = new ToborEngine(fakeGame([hard, soft, softPlate, softDoor]));
+  softEngine.newGame();
+  const runtimeSoftPlate = softEngine.objectsAt(5, 2).find((entry) => entry.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_'));
+  const runtimeSoftDoor = softEngine.objectsAt(8, 8)[0];
+
+  assert.equal(softEngine.pushObject(softEngine.objectsAt(3, 2)[0], 'right'), true);
+  assert.equal(softEngine.objectsAt(5, 2).some((entry) => entry.id === 'OBJ_ISOLATOR_SOFT'), true);
+  assert.equal(runtimeSoftPlate.type, 0);
+  assert.equal(runtimeSoftDoor.type, 0);
+
+  const hardPlate = object('OBJ_ELECTRIC_FLOOR_PLATE_0', 4, 2, { type: 0, flag: 7 });
+  const hardDoor = object('OBJ_ELECTRIC_DOOR_0', 8, 8, { type: 0, flag: 7 });
+  const hardEngine = new ToborEngine(fakeGame([object('OBJ_ISOLATOR', 3, 2), hardPlate, hardDoor]));
+  hardEngine.newGame();
+  const runtimeHardPlate = hardEngine.objectsAt(4, 2).find((entry) => entry.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_'));
+  const runtimeHardDoor = hardEngine.objectsAt(8, 8)[0];
+
+  assert.equal(hardEngine.pushObject(hardEngine.objectsAt(3, 2)[0], 'right'), true);
+  assert.equal(runtimeHardPlate.type, 1);
+  assert.equal(runtimeHardDoor.type, 1);
+});
+
+test('an ice block melting in place releases the floor plate below it', () => {
+  const floorPlate = object('OBJ_ELECTRIC_FLOOR_PLATE_0', 4, 2, { type: 0, flag: 7 });
+  const door = object('OBJ_ELECTRIC_DOOR_0', 8, 8, { type: 0, flag: 7 });
+  const ice = object('OBJ_ICE_BLOCK', 3, 2, { flag: 9 });
+  const target = object('OBJ_TARGET', 1, 1, { flag: 9 });
+  const thermoPlate = object('OBJ_THERMOPLATE_1', 10, 10, { type: 1, flag: 9 });
+  const engine = new ToborEngine(fakeGame([ice, floorPlate, door, target, thermoPlate]));
+  engine.newGame();
+  const runtimeIce = engine.objectsAt(3, 2)[0];
+  const runtimeFloorPlate = engine.objectsAt(4, 2).find((entry) => entry.id.startsWith('OBJ_ELECTRIC_FLOOR_PLATE_'));
+  const runtimeDoor = engine.objectsAt(8, 8)[0];
+  const runtimeTarget = engine.objectsAt(1, 1)[0];
+
+  assert.equal(engine.pushObject(runtimeIce, 'right'), true);
+  assert.equal(runtimeFloorPlate.type, 1);
+  assert.equal(runtimeDoor.type, 1);
+
+  engine.switchFlag(9, runtimeTarget);
+  assert.equal(runtimeIce.alive, false);
+  assert.equal(runtimeFloorPlate.type, 0);
+  assert.equal(runtimeDoor.type, 0);
 });
 
 test('an electric thermo plate creates and removes its flagged ice block', () => {
@@ -677,7 +740,14 @@ test('ordinary inventory items can be dropped back into the current room', () =>
   assert.equal(engine.objectsAt(2, 2).some((entry) => entry.id === 'OBJ_SHOES'), true);
 });
 
-test('the exclamation mark opens world inspection and a clock is consumed by saving', () => {
+test('the exclamation mark opens world inspection and a clock is consumed by saving', (t) => {
+  const values = new Map();
+  const originalStorage = globalThis.localStorage;
+  globalThis.localStorage = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+  };
+  t.after(() => { globalThis.localStorage = originalStorage; });
   const events = [];
   const engine = new ToborEngine(fakeGame([object('OBJ_WALL_HARD', 4, 2)]), (event) => events.push(event));
   engine.newGame();
@@ -690,6 +760,135 @@ test('the exclamation mark opens world inspection and a clock is consumed by sav
   assert.equal(events.at(-1).type, 'message');
   assert.equal(engine.useItem('OBJ_CLOCK'), true);
   assert.equal(engine.inventoryHas('OBJ_CLOCK'), false);
+});
+
+test('a clock creates a durable checkpoint that later autosaves do not overwrite', (t) => {
+  const values = new Map();
+  const originalStorage = globalThis.localStorage;
+  globalThis.localStorage = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+  };
+  t.after(() => { globalThis.localStorage = originalStorage; });
+
+  const engine = new ToborEngine(fakeGame());
+  engine.newGame();
+  engine.gold = 7;
+  engine.addInventory('OBJ_CLOCK');
+  assert.equal(engine.useItem('OBJ_CLOCK'), true);
+  assert.equal(engine.hasClockSave(), true);
+
+  engine.gold = 99;
+  engine.save();
+  const restored = new ToborEngine(fakeGame());
+  assert.equal(restored.loadClockSave(), true);
+  assert.equal(restored.gold, 7);
+  assert.equal(restored.inventoryHas('OBJ_CLOCK'), false);
+});
+
+test('a clock is returned to the inventory when browser storage is unavailable', (t) => {
+  const originalStorage = globalThis.localStorage;
+  globalThis.localStorage = {
+    getItem: () => null,
+    setItem: () => { throw new Error('storage disabled'); },
+  };
+  t.after(() => { globalThis.localStorage = originalStorage; });
+
+  const engine = new ToborEngine(fakeGame());
+  engine.newGame();
+  engine.addInventory('OBJ_CLOCK');
+  assert.equal(engine.useItem('OBJ_CLOCK'), false);
+  assert.equal(engine.inventoryHas('OBJ_CLOCK'), true);
+});
+
+test('an unlocked door and the original first footstep both sound as movement starts', () => {
+  const events = [];
+  const engine = new ToborEngine(fakeGame([object('OBJ_DOOR#0', 3, 2, { type: 0 })]), (event) => events.push(event));
+  engine.newGame();
+  engine.addInventory('OBJ_KEY#0');
+  events.length = 0;
+
+  assert.equal(engine.tryStartMove('right'), true);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'open-door').length, 1);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'charlie-step').length, 1);
+  engine.update(ENTER_CELL_SECONDS);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'open-door').length, 1);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'charlie-step').length, 2);
+});
+
+test('colliding with a monster immediately shows and sounds the original six-frame explosion', () => {
+  const events = [];
+  const robot = object('OBJ_ROBOT', 3, 2, { _moveCooldown: 999 });
+  const engine = new ToborEngine(fakeGame([robot]), (event) => events.push(event));
+  engine.newGame();
+  events.length = 0;
+
+  engine.tryStartMove('right');
+  engine.update(ENTER_CELL_SECONDS);
+
+  const explosion = engine.objectsAt(3, 2).find((entry) => entry.id === 'OBJ_EXPLOSION');
+  assert.ok(explosion);
+  assert.equal(explosion._explosionDuration, 2.5);
+  assert.equal(engine.player.visible, false);
+  assert.equal(engine.death.cause, 'OBJ_ROBOT');
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'explosion-player').length, 1);
+
+  engine.update(2.49);
+  assert.equal(explosion.alive, true);
+  engine.update(0.02);
+  assert.equal(explosion.alive, false);
+  assert.equal(engine.player.visible, true);
+  assert.equal(engine.player.x, 2);
+});
+
+test('losing a life is committed to autosave immediately', (t) => {
+  const values = new Map();
+  const originalStorage = globalThis.localStorage;
+  globalThis.localStorage = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+    removeItem: (key) => values.delete(key),
+  };
+  t.after(() => { globalThis.localStorage = originalStorage; });
+
+  const engine = new ToborEngine(fakeGame());
+  engine.newGame();
+  engine.killPlayer('OBJ_ROBOT');
+  assert.equal(engine.lives, 2);
+  assert.equal(engine.player.visible, false);
+
+  const restored = new ToborEngine(fakeGame());
+  assert.equal(restored.load(), true);
+  assert.equal(restored.lives, 2);
+  assert.equal(restored.player.visible, true);
+  assert.equal(restored.player.x, 2);
+});
+
+test('game over removes autosave but preserves the last clock checkpoint', (t) => {
+  const values = new Map();
+  const originalStorage = globalThis.localStorage;
+  globalThis.localStorage = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+    removeItem: (key) => values.delete(key),
+  };
+  t.after(() => { globalThis.localStorage = originalStorage; });
+
+  const engine = new ToborEngine(fakeGame());
+  engine.newGame();
+  engine.addInventory('OBJ_CLOCK');
+  assert.equal(engine.useItem('OBJ_CLOCK'), true);
+  for (let life = 0; life < 3; life += 1) {
+    engine.killPlayer('OBJ_ROBOT');
+    engine.update(2.51);
+  }
+
+  assert.equal(engine.lost, true);
+  assert.equal(engine.hasSave(), false);
+  assert.equal(engine.hasClockSave(), true);
+  const restored = new ToborEngine(fakeGame());
+  assert.equal(restored.loadClockSave(), true);
+  assert.equal(restored.lives, 3);
 });
 
 test('a clone duplicates the selected item and is consumed', () => {
@@ -802,8 +1001,13 @@ test('deadly water kills without starting a forced move from the respawn point',
   engine.update(ENTER_CELL_SECONDS);
 
   assert.equal(engine.lives, 2);
-  assert.equal(engine.player.x, 2);
+  assert.equal(engine.player.x, 3);
+  assert.equal(engine.player.visible, false);
+  assert.equal(engine.objectsAt(3, 2).some((entry) => entry.id === 'OBJ_EXPLOSION'), true);
   assert.equal(engine.motion, null);
+  engine.update(2.51);
+  assert.equal(engine.player.x, 2);
+  assert.equal(engine.player.visible, true);
 });
 
 test('robots and androids die on deadly ice and slide over ordinary ice', () => {
@@ -852,19 +1056,23 @@ test('lit torches age in the original ten-second stages', () => {
   assert.equal(engine.objectsAt(8, 8)[0].type, 3);
 });
 
-test('tunnels carry Charlie invisibly to the nearest matching exit at half base speed', () => {
+test('tunnels carry Charlie invisibly and tap at entry, every tile and exit like Tobor', () => {
+  const events = [];
   const engine = new ToborEngine(fakeGame([
     object('OBJ_TUNNEL#2', 3, 2, { type: 2 }),
     object('OBJ_TUNNEL#3', 7, 2, { type: 3 }),
-  ]));
+  ]), (event) => events.push(event));
   engine.newGame();
+  events.length = 0;
   engine.pressDirection('right');
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'charlie-step').length, 1);
   engine.update(ENTER_CELL_SECONDS);
 
   assert.equal(engine.player.visible, false);
   assert.equal(engine.motion.tunnel, true);
   assert.equal(engine.motion.forced, true);
   assert.equal(engine.motion.speedFactor, 0.5);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'tunnel-step').length, 1);
   engine.releaseDirection('right');
   engine.update((4 / (SPEED_PRESETS.normal.tilesPerSecond * 0.5)) + 0.01);
 
@@ -872,4 +1080,5 @@ test('tunnels carry Charlie invisibly to the nearest matching exit at half base 
   assert.equal(engine.player.y, 2);
   assert.equal(engine.player.visible, true);
   assert.equal(engine.motion, null);
+  assert.equal(events.filter((event) => event.type === 'sound' && event.name === 'tunnel-step').length, 6);
 });

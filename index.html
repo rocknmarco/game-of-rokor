@@ -21,7 +21,9 @@
           <div class="title-screen__actions">
             <button class="button button--primary" id="new-game" disabled>Neues Abenteuer</button>
             <button class="button button--glass" id="continue-game" disabled>Fortsetzen</button>
+            <button class="button button--glass button--clock" id="clock-game" disabled>Noch kein Uhr-Spielstand</button>
           </div>
+          <p class="title-screen__save-hint" id="save-hint">Finde und benutze im Spiel eine Uhr, um einen dauerhaften Spielstand anzulegen.</p>
           <div class="title-options">
             <label for="movement-speed-title"><span>Bewegungstempo</span><small>Originale Tobor-Stufen</small></label>
             <select id="movement-speed-title">
@@ -31,6 +33,7 @@
               <option value="fast">Schnell</option>
               <option value="veryFast">Sehr schnell</option>
             </select>
+            <button class="audio-toggle" id="audio-toggle-title" type="button" aria-pressed="true">🔊 Ton an</button>
           </div>
           <div class="loading-line" id="loading-line"><span id="loading-progress"></span></div>
           <p class="title-screen__hint" id="loading-text">Spieldaten werden vorbereitet …</p>
@@ -44,6 +47,7 @@
             <span><strong>INSEL DER RUINEN</strong><small>Rokor Web Edition</small></span>
           </button>
           <div class="room-heading"><span id="room-level">Ebene 0</span><strong id="room-name">Wird geladen …</strong></div>
+          <button class="audio-toggle audio-toggle--game" id="audio-toggle" type="button" aria-pressed="true">🔊 Ton an</button>
           <div class="hud-stats">
             <span class="hud-stat hud-stat--life"><i>♥</i><b id="lives">3</b></span>
             <span class="hud-stat"><i>●</i><b id="gold">0</b></span>
@@ -78,6 +82,22 @@
               <canvas id="game-canvas" width="640" height="348" tabindex="0" aria-label="Spielfeld"></canvas>
               <div class="room-banner" id="room-banner"><span id="banner-level">Ebene 0</span><strong id="banner-name"></strong></div>
               <div class="toast" id="toast"></div>
+              <div class="tobor-inventory-overlay" id="inventory-overlay" hidden>
+                <div class="tobor-inventory-bar">
+                  <button class="inventory-back" id="inventory-back" type="button" aria-label="Zurück" hidden>‹</button>
+                  <span class="inventory-caption" id="inventory-caption">Rucksack</span>
+                  <div class="inventory-large" id="inventory-large" role="listbox" aria-label="Rucksackinhalt"></div>
+                  <button class="inventory-close" id="inventory-close" type="button" aria-label="Rucksack schließen">×</button>
+                </div>
+                <div class="inventory-actions-popup" id="inventory-actions"></div>
+              </div>
+              <div class="dialog-backdrop" id="dialog-backdrop" hidden>
+                <article class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+                  <header><h2 id="dialog-title"></h2><button id="dialog-close" type="button" aria-label="Meldung schließen">×</button></header>
+                  <p id="dialog-text"></p>
+                  <small>Enter, Leertaste oder Klick zum Schließen</small>
+                </article>
+              </div>
               <div class="inspect-overlay" id="inspect-overlay" hidden>
                 <div class="inspect-cursor" id="inspect-cursor"></div>
                 <p id="inspect-hint">Mit Pfeilen oder Maus wählen · Enter/Klick ansehen · Esc schließen</p>
@@ -107,22 +127,6 @@
           </aside>
         </div>
       </main>
-
-      <div class="dialog-backdrop" id="dialog-backdrop" hidden>
-        <article class="dialog" role="dialog" aria-modal="true">
-          <div class="dialog__portrait">☀</div>
-          <div class="dialog__body"><p class="panel-label">Inselchronik</p><h2 id="dialog-title"></h2><p id="dialog-text"></p><button class="button button--primary" id="dialog-close">Weiter</button></div>
-        </article>
-      </div>
-
-      <div class="inventory-overlay" id="inventory-overlay" hidden>
-        <article class="inventory-dialog">
-          <button class="overlay-close" id="inventory-close">×</button>
-          <p class="eyebrow">Reisegepäck</p><h2>Rucksack</h2>
-          <div class="inventory-large" id="inventory-large"></div>
-          <p class="overlay-hint">Wähle einen Gegenstand, um ihn anzusehen oder zu benutzen.</p>
-        </article>
-      </div>
 
       <div class="map-overlay" id="map-overlay" hidden>
         <button class="overlay-close" id="map-close">×</button>
