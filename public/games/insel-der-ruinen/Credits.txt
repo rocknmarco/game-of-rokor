@@ -1,0 +1,10 @@
+Grafikenersteller -> CherryAB, Anthony Xue, Andreas
+Episodeersteller -> CherryAB
+Programmierung -> Fausti
+InGameTexte -> CherryAB, Anthony Xue, Fausti
+Bugfinder -> Chrisby, FdL
+
+BetaTester oder auch Episode geschafft hat:
+1. Chrisby - Punkte: 2.481.700 Punkte + 250.000 = 2.731.700 Punkte
+2. FdL - Punkte: 2.666.660 Punkte + gutes Ende
+3.

@@ -1,5 +1,4 @@
 import './style.css';
-import { Game } from './game/game.js';
+import { ToborApp } from './tobor/app.js';
 
-const game = new Game();
-game.mount();
+new ToborApp().mount();

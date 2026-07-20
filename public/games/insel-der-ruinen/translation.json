@@ -1,0 +1,1334 @@
+{
+     "TXT_NOTICE_ROOM_200_NR_0" : {
+         "de" : "Es gibt 3 Schrein-Teleporter auf die Insel, die Vorankommen erleichtern wird. Es wird mehrere bestimmte Gegenstände benötigt, um den Schrein voll nutzen zu können."
+    }
+    ,"TXT_NOTICE_ROOM_200_NR_1" : {
+         "de" : "Den Ungeziefern sind nicht so schlau und laufen immer den Spieler linear nach und umgeht den nicht die Hindernisse wie Mauer oder ähnliches. Dies müsstest du doch längst bemerkt haben :)"
+    }
+    ,"TXT_NOTICE_ROOM_200_NR_2" : {
+         "de" : "Es existiert einen Secret Dungeon, das wiederum zum Schatz führt. Findest du diesen versteckten Schatz?"
+    }
+    ,"TXT_NOTICE_ROOM_200_NR_3" : {
+         "de" : "Auf der Insel gibt mehrere große versteckte Schätze. Wo diese sind, ist leider nicht bekannt."
+    }
+    ,"TXT_NOTICE_ROOM_201_NR_0" : {
+         "de" : "Das erste was du tun muss, um die Wanderschuhe zu bekommen, ist der Waldtempel im Westwald zu erkunden. Vergiss der violette Schlüssel nicht, diese befindet sich irgendwo im Westwald."
+    }
+    ,"TXT_NOTICE_ROOM_201_NR_1" : {
+         "de" : "Das ganze Gold kannst du für Punkte mittels Altäre austauschen. Das Maximum der Goldaltar-Opferung liegt bei 40 Goldstücke."
+    }
+    ,"TXT_NOTICE_ROOM_201_NR_2" : {
+         "de" : "Banditen/Piraten schaltet man am besten Stück für Stück aus. Dasselbe gilt auch für das Ungeziefer."
+    }	
+    ,"TXT_NOTICE_ROOM_201_NR_3" : {
+         "de" : "Knoblauch wachsen da, wenn genau 2 Sträucher und Buschpflanzen in der Nähe liegt, in der Nähe Wasser vorhanden ist und liebt sandige Untergrund."
+    }		
+    ,"TXT_NOTICE_ROOM_201_NR_4" : {
+         "de" : "Es gibt 15 verschiedene Schlüsseln, dessen 2 davon Schlüssel gibt, das nicht für das Spielziel nötig ist. Kurz gesagt: Optimal"
+    }
+    ,"TXT_NOTICE_ROOM_202_NR_1" : {
+         "de" : "Den meisten Ungeziefern lassen sich leicht selbst beseitigen, wenn man in einer Sackgasse lockt, das nur ein Feld breit ist und alle 8 Richtungen einem Hindernisse oder auch den Weg versperrt wird, hat außer einer Richtung (kein Hindernisse)."
+    }	
+    ,"TXT_NOTICE_ROOM_202_NR_0" : {
+         "de" : "Du solltest mindestens 2 Tannenbäume für das letzte Raumszene aufheben."
+    }
+    ,"TXT_NOTICE_ROOM_202_NR_2" : {
+         "de" : "Es gibt 2 Mauertypen (rote und braune) die gleich aussehen, aber durchlaufen kann. Da ist einen ganz feinen Unterschied zu erkennen. Das nennt man Geheimmauer."
+    }	
+    ,"TXT_NOTICE_ROOM_203_NR_0" : {
+         "de" : "Manchmal sind Gegenstände oft in der Nähe von Gräbern vergraben. Sogar tote Skelette auf dem Sand kann in der Nähe Gegenstände vergraben sein."
+    }
+    ,"TXT_NOTICE_ROOM_203_NR_1" : {
+         "de" : "Wenn du überall hin willst, wirst du die Schwimmflosse, der blaue Anzug und die Lampe brauchen. Es gibt sogar Stellen, die stockdunkel sind."
+    }	
+    ,"TXT_NOTICE_ROOM_203_NR_2" : {
+         "de" : "Ich hoffe, du hast einige wichtige alte Schriftstücke/Notizen, die du gefunden hast, aufgeschrieben. Denn die enthalten oft Hinweise zu den vergrabenen Gegenstände oder versteckte Orte."
+    }	
+    ,"TXT_NOTICE_ROOM_203_NR_3" : {
+         "de" : "Es existiert ein geheimer Ort, das auf der Landkarte nicht verzeichnet ist."
+    }		
+    ,"TXT_NOTICE_ROOM_203_NR_4" : {
+         "de" : "Position der Edelsteine: \nGrün: alte Waldtempel Haikliris \nGelb: Wüstenfestung \nBlau: Wassertempel Hyaos \nRot: Tempel Reliance im Buchtinsel"
+    }	
+    ,"TXT_NOTICE_ROOM_592_NR_0" : {
+         "de" : "Kurze Story: In dieser Episode spielt nicht im Moderne, sondern irgendwann vor Zeitalter der Entdeckung. Du bist der Vorfahre-Charlie und hat eine Aufgabe bekommen, Insel der Ruinen zu erforschen. Leider bist du auf dem Weg zur Hafenstadt in Sturm geraten und ist gestrandet und muss nun irgendwie zurechtkommen. InGameRegel: Es ist nicht erlaubt, Wassereimer auf den Bodenplatten abzulegen."
+    }	
+    ,"TXT_NOTICE_ROOM_592_NR_1" : {
+         "de" : "--- Credits --- \nProgrammierer: Fausti \nEpisodenersteller: CherryAB \nNeue Grafiken: CherryAB, Anthony Xue (Höhlen, Mauern, Türen und Himmel) \n\nEventuelle Aehnlichkeiten zu anderen Spielen sind selbstverstaendlich rein zufaellig :) \nSaemtliche kommerzielle Nutzung ist ohne Zustimmung nicht gestattet!"
+    }	
+    ,"TXT_NOTICE_ROOM_592_NR_2" : {
+         "de" : "Tagebuch von 21. Juli: \n\nNach 2 Wochen Schifffahrt bin ich fast die Zielinsel angekommen. Situation wie immer, aber da vorne am Ozeanhorizont im Norden baut gerade einen Sturm auf. Hoffentlich erreicht das Schiff rechtzeitig am Hafen. Ansonsten habe ich ein echtes Problem..."
+    }
+    ,"TXT_NOTICE_ROOM_592_NR_3" : {
+         "de" : "Quest #1 \n\nFinde einen Weg nach Hauptstadt und sprich mit deinem Auftraggeber im Regierungshaus. Falls möglich: Erforsche eventuell ein Teil der Insel."
+    }
+    ,"TXT_NOTICE_ROOM_682_NR_0" : {
+         "de" : "Charlie: Verdammt, warum ausgerechnet diese blöde Mauer steht mir im Weg, ich muss einen anderen Weg nach Hauptstadt finden..., hoffentlich finde ich eine... Hoffentlich, ganz sicher."
+    }
+    ,"TXT_NOTICE_ROOM_392_NR_0" : {
+         "de" : "Hier ist nur eine Liste der Waren aus dem Schiff, geholt wurde."
+    }
+    ,"TXT_NOTICE_ROOM_272_NR_0" : {
+         "de" : "Einfache Bericht der Banditen: \n\nWir haben versucht, die Außenposten auszuspionieren, aber es ist uns wieder mal misslungen. Wir fordern bessere Ausrüstung für diesen Auftrag. Sonst wird es so weiter gehen."
+    }
+    ,"TXT_NOTICE_ROOM_172_NR_0" : {
+         "de" : "Du stehst vor einem gewaltigen Flussmündung, ob du einen Weg durch gefährlichen Fluss durchqueren kannst?"
+    }
+    ,"TXT_NOTICE_ROOM_022_NR_0" : {
+         "de" : "Wenn du die Inselkarte haben möchtest, musst du 40 Goldstücke dafür bezahlen. Wenn du weniger als 40 zahlst, musst du 20% Punkte beim Endergebnis die Punkte (Spielende) abziehen!"
+    }
+    ,"TXT_NOTICE_ROOM_022_NR_1" : {
+         "de" : "Passwort für die Inselkarte im Zip-Archiv das 7z-Archiv enthält, lautet: H6%9r3nM1#?d+"
+    }
+    ,"TXT_NOTICE_ROOM_022_NR_2" : {
+         "de" : "Bürgermeister: Du willst zur Hauptstadt weiterreisen? Dafür wirst du besondere Wanderschuhe im alten Waldtempel südöstlich im Wald suchen müssen. Viele haben es versucht und keiner ist zurückgekommen. <--Quest #2. Und nimm der graue Schlüssel mit, du wirst es brauchen."
+    }	
+    ,"TXT_NOTICE_ROOM_121_NR_0" : {
+         "de" : "Burg-Anführer: Wenn du nach Hauptstadt reisen willst, sei Vorsicht vor dem bewaffneten Banditen, diese sind gefährlich. Besorg dir etwas, was du zum Wehr setzen kannst."
+    }	
+    ,"TXT_NOTICE_ROOM_112_NR_0" : {
+         "de" : "Hier ist nur unleserliche Text, aber ein Teil ist lesbar: \n\nAltäre, das mit bis zu 40 Goldstücke für Punkte geopfert werden kann..."
+    }	
+    ,"TXT_NOTICE_ROOM_012_NR_0" : {
+         "de" : "Tagebuch des Erkunders: \n\nIch versuche schon lange, einen Weg zur kleinen Wasserfestung zu finden, aber diese Haie ist viel zu gefährlich. Und ohne passende Schwimmzeug geht auch nicht..."
+    }	
+    ,"TXT_NOTICE_ROOM_712_NR_0" : {
+         "de" : "Forschungsnotiz: \n\nWir haben die Wüste hier im Osten größtenteils erforscht, aber die Wüstenfestung bleibt für uns weiterhin versperrt. Daher müssen wir die passende rote Schlüssel suchen. Ansonsten sieht für uns mit der Erkundung im Festung schlecht aus."
+    }	
+    ,"TXT_NOTICE_ROOM_902_NR_0" : {
+         "de" : "Notitzzettel eines Verstorbenen: \n\nIch kann nicht mehr, die Skorpione haben mir den Weg zur Freiheit blockiert, da gibt kein entkommen mehr. Zum Überfluss habe ich die gesuchte rote Schlüssel irgendwo im großen Wüste verloren. Verdammt, die Skorpione kommen immer näher... ist das mein endgültiges Ende? Oder kann ich doch einen Weg lebend herausfliehen..."
+    }	
+    ,"TXT_NOTICE_ROOM_922_NR_0" : {
+         "de" : "Ein altes Schriftstück, aber ein davon Teil lesbar ist: \n\n...die große Ungeziefer-Plage muss gestoppt werden, sonst... Der Rest ist zu verwittert und unleserlich."
+    }	
+    ,"TXT_NOTICE_ROOM_923_NR_0" : {
+         "de" : "Ich habe meinen so tollen Schatz irgendwo auf dieser Insel versteckt. Wer die findet, soll es auch belohnt werden. Hier ist das Rätsel: Der Schatz ist zwischen 3 Sandhügeln versteckt. Wo genau ist, wird nicht verraten. Such selbst, wenn du es haben willst."
+    }	
+    ,"TXT_NOTICE_ROOM_632_NR_0" : {
+         "de" : "Ein altes Schriftstück, das jedoch ein Großteil davon lesbar ist: \n\nEs sind einfach zu viele Ungeziefer, wir können den Kampf nicht gewinnen, da die Brut tief unter der Erde befindet. Wir müssen vielleicht zum tiefen Höhlen zurückzie... der Rest ist unleserlich."
+    }	
+    ,"TXT_NOTICE_ROOM_631_NR_0" : {
+         "de" : "Piratenbericht, eingetragen vor ein paar Tagen: \n\nWir suchen schon seit Monaten einen Weg in das Heiligtum zu finden, aber bisher erfolglos geblieben ist. Ansonsten war der Überfall auf einige Reisende, dessen ein Händler dabei war, große Beute machen können. Die Beute ist wie immer im Geheimversteck."
+    }	
+    ,"TXT_NOTICE_ROOM_532_NR_0" : {
+         "de" : "Ein altes Schriftstück, das fast unleserlich ist: \n\n...mehrere geheime Schätze, die gut versteckt ist..."
+    }		
+    ,"TXT_NOTICE_ROOM_533_NR_0" : {
+         "de" : "Hier steht die Position der Edelsteine geschrieben: \n\nPosition der Edelsteine: \nGrün: alte Waldtempel Haikliris \nGelb: Wüstenfestung \nBlau: Wassertempel Hyaos \nRot: Tempel Reliance im Buchtinsel"
+    }		
+    ,"TXT_NOTICE_ROOM_232_NR_0" : {
+         "de" : "Die zwei anderen Teleporter führen zu den anderen Schrein-Teleporter, der andere ist Startpunkt."
+    }		
+    ,"TXT_NOTICE_ROOM_732_NR_1" : {
+         "de" : "Die zwei anderen Teleporter führen zu den anderen Schrein-Teleporter, der andere ist Startpunkt."
+    }
+    ,"TXT_NOTICE_ROOM_732_NR_0" : {
+         "de" : "Eine alte Seite vom einem Tagesbuch: \n\nNoch so eine mysteriöse Schrein. Insgesamt gibt es drei davon, aber der Verwendungszweck ist mir unbekannt. Bei nähere Betrachtung ist dies der Hauptschrein von dreien. Ich werde demnächst versuchen, Zugang zu verschaffen..."
+    }	
+    ,"TXT_NOTICE_ROOM_462_NR_1" : {
+         "de" : "Die zwei anderen Teleporter führen zu den anderen Schrein-Teleporter, der andere ist Startpunkt."
+    }		
+    ,"TXT_NOTICE_ROOM_462_NR_0" : {
+         "de" : "Ein Tagesbuch vom Inselerforscher geschrieben: \n\nFaszinierend! Der Waldtempel Haikliris muss im antike Zeitalter erstanden sein. Das besagen die alten Wandzeichnungen, die ich vor kurzem entschlüsseln konnte. Aber was mir Probleme bereitet ist die ganzen Ungeziefer, der im Tempel hausen. Woher kommen diesen Viechern? All diese Fragen. Jedoch muss ich morgen zur Hauptstadt abreisen und den Bericht abliefern."
+    }		
+    ,"TXT_NOTICE_ROOM_951_NR_0" : {
+         "de" : "Du bist wohl der Person, dessen mein Vorgesetzer vorraus informiert hat. Und tut mir leid, wegen Torsperre im Norden. Es war nötig, verschlossen zu bleiben, wegen ganzen Ungeziefer hier. Und nimm der blaue Schlüssel im Etage 1. Du wirst es brauchen..."
+    }		
+    ,"TXT_NOTICE_ROOM_482_NR_0" : {
+         "de" : "Ein Stück lesbare Zettel auf dem Boden: \n\nEs gibt sehr viele Ruinen, die meisten sind im Zeitalter der Antike entstanden. Einige davon ist erst später entstanden, wie diese Ruine hier."
+    }		
+    ,"TXT_NOTICE_ROOM_553_NR_0" : {
+         "de" : "Ein altes Schriftstück, das nur ein Teil lesbar ist: \n\n...es existiert einen geheimem Secret Dungeon..."
+    }		
+    ,"TXT_NOTICE_ROOM_623_NR_0" : {
+         "de" : "Hier liegt ein Eintrag im Dokument: \n\nWegen massive Ungeziefern müssen wir diese Handelsposten wohl aufgeben, ein Ersatz ist bereits im Plan: 2 Häfen zwischen südlich von Buchtinsel errichten, das viel sicherer ist als in diesem unsicher gewordene Gebiet."
+    }	
+    ,"TXT_NOTICE_ROOM_944_NR_0" : {
+         "de" : "Wir, das einst mächtige Volk, herrschte die Insel sehr viele Jahre, sogar tausenden."
+    }
+    ,"TXT_NOTICE_ROOM_944_NR_1" : {
+         "de" : "Dann kam das Unheil der Ungeziefer, das unsere Ländereien zerstörten. Viele Städte wurden überrannt. Wir sind im Dunkeln, woher diese Ungeziefer kamen oder wie die entstanden sind."
+    }
+    ,"TXT_NOTICE_ROOM_944_NR_2" : {
+         "de" : "Unser Volk hatten versucht, vor dem Unheil der Ungeziefer zu fliehen. Indem wir in die vielen Höhlen zurückzogen und dort unser Volk weiterzuexistieren. Nicht alle schafften das."
+    }	
+    ,"TXT_NOTICE_ROOM_944_NR_3" : {
+         "de" : "Bis heutige Tagen lebt das Volk unter Erdenhölen. Es gab frische Wasser, schwimmende Fische und Tiere, das Höhlenleben angepasst wurden. Auch die leuchtenden Kristalle erhellt die Höhlen. Sogar Wärme ist hier vorhanden, vielleicht durch rotes flüssiges Gestein."
+    }
+    ,"TXT_NOTICE_ROOM_944_NR_4" : {
+         "de" : "Wir. Das Volk haben prophezeit, dass ein Außenwelter oder Auserwählter, das die ganze Chaos-Plage ein endgültiges Ende setzen wird."
+    }	
+    ,"TXT_NOTICE_ROOM_365_NR_0" : {
+         "de" : "Ein beschriftete lesbare Steinplatte: \n\nDer Schatz, denen du suchst, ist nicht hier. Suche die südwestlichste kleine Insel, dort wirst du es finden."
+    }	
+    ,"TXT_NOTICE_ROOM_882_NR_0" : {
+         "de" : "Tagebuch eines Inselforschers: \n\nIch hatte mein blaue Schutzanzug mitgebracht, um diese lästigen Dornbüsche umzugehen. Ich werde in ein paar Tagen zu die große Wüste aufbrechen, aber ich muss einen anderen Weg nehmen, weil die nördliche und östliche Schutzmauer aktuell verriegelt ist. Und dieser Weg führt durch den Ostwald."
+    }	
+    ,"TXT_NOTICE_ROOM_892_NR_0" : {
+         "de" : "Sekretariat: Dein Auftraggeber wartet auf dich, Charlie. Er ist im ersten Etage, den rechten Raum im rechten Gebäudeseite."
+    }	
+    ,"TXT_NOTICE_ROOM_891_NR_4" : {
+         "de" : "Auftraggeber: Ah, Charlie. Sie sind angekommen, ich habe da ein wichtiger Auftrag für dich, und zwar gleich mehrere. Aber in reihen folgend. Hier ist ihre Quest #3 : \n\nErkunde die Wassertempel im Ostwald. Weitere Quest findest du im südlichen Raum. Dort kannst du weitere Quest holen, wenn du dafür bereit bist."
+    }	
+    ,"TXT_NOTICE_ROOM_891_NR_0" : {
+         "de" : "Quest #4 :\n\nFinde einen Weg, die immer mehr werdende Ungeziefern für immer zu beseitigen/vernichten oder zumindest was dagegen zu machen."
+    }		
+    ,"TXT_NOTICE_ROOM_981_NR_1" : {
+         "de" : "Quest #5 : \n\nVertreibe die Banditen und die Piraten für immer von der Insel."
+    }
+    ,"TXT_NOTICE_ROOM_981_NR_2" : {
+         "de" : "Quest #6 : \n\nVertreibe die Banditen im Gebirge für immer von der Insel."
+    }
+    ,"TXT_NOTICE_ROOM_891_NR_3" : {
+         "de" : "Quest #7 :\n\nSuche die besonderen Edelsteine, es soll 4 davon geben."
+    }		
+    ,"TXT_NOTICE_ROOM_415_NR_0" : {
+         "de" : "Du musst nur noch diese Bodenplatte berühren und die Ungeziefer-Brut wird für immer versiegelt. Vergiss nicht, die Tür zu der Ungeziefer-Brut zu schließen. Dann wirst du das gute Ende bekommen. 250.000 Punkte wird auf das Endergebnis gutgeschrieben."
+    }
+    ,"TXT_NOTICE_ROOM_992_NR_0" : {
+         "de" : "Dieses Spiel hat 2 Enden, je nachdem ob du 4 Edelsteine findest und/oder auch das Hauptquest abgeschlossen hast. Es hat gutes und schlechte Ende. Zusätzlich gib noch 2 Faktoren, das dein Endergebnis beeinflusst wird."
+    }
+    ,"TXT_NOTICE_ROOM_881_NR_0" : {
+         "de" : "Entdecker-Bericht: Die meisten Höhlen sind halb so dunkel und kann grade noch so sehen, aber einige Höhlen sind stockfinster. Es wird angeraten, eine funktionierende Lampe bei sich zu haben."
+    }
+    ,"TXT_NOTICE_ROOM_814_NR_0" : {
+         "de" : "Ein sehr altes Schriftstück, das nur ein Teil davon lesbar ist: \n\n...der Schlüssel Nr. 14 ist im Berggebiet sicher versteckt."		 
+    }
+    ,"TXT_NOTICE_ROOM_914_NR_0" : {
+         "de" : "Eine lesbare alte Tagebuch mit etwas Sand drauf: \n\nIch habe endlich gefunden, das sogenannte dunkle Millrial-Höhle. Es ist tief im Untergrund und stockfinster. Außerdem habe ich in diesen Höhlen der rote Schlüssel gefunden, aber dann kam ein großes Problem: ich habe mich verlaufen, ich komme nie wieder raus. Und die Lampe ist fast leer. Ich hoffe jemand liest mein Tagebuch... und mein rote Schlüssel, das ich im Westen von hier versteckt habe, findet..."		 
+    }	
+    ,"TXT_NOTICE_ROOM_042_NR_0" : {
+         "de" : "Ein altes Schriftstück mit halb lesbare Schriftabschnitt: \n\n .er Schl... ...8 ist ni... a.. der Hau...in..l. Der Rest ist unleserlich."
+    }
+    ,"TXT_NOTICE_ROOM_241_NR_0" : {
+         "de" : "Du findest ein Bericht im Regal: Wir versuchten seit Monaten, in den Berg zu gelangen, aber wir finden einfach kein Weg da hin. Der einzige Weg von dieser Inselseite aus zum Berg ist im Nordgebirge beim Aussichthaus. Aber weiter geht es nicht, weil da viele gefährliche Banditen dort befinden."
+    }
+    ,"TXT_NOTICE_ROOM_393_NR_0" : {
+         "de" : "Du findest ein fast unleserliches Schriftstück. Aber dieser Teil ist lesbar: Es exi..ie.t 3 Tel...rt....hreine, da... Der Rest ist nicht lesbar."
+    }
+    ,"TXT_NOTICE_ROOM_192_NR_0" : {
+         "de" : "Du findest ein altes vermoderte Tagebuch und dieser Teil ist lesbar: Wir haben geschafft, das mysteriöse neblige Insel zu erreichen. Ich sehe 2 Ruinengebäuden im Wald. Morgen versuchen wir, in die Ruinen zu gelangen und zu erkunden."
+    }
+    ,"TXT_NOTICE_ROOM_904_NR_0" : {
+         "de" : "Du findest ein altes Tagebuch neben das Skelett. Dieser Abschnitt ist lesbar: Ich habe meine besondere Ausrüstung in dieser dunklen Höhle versteckt. Nur zu doof, dass ich nicht mehr rauskomme, diese verdammte Höhlenlabyrinth. Es muss doch einen Weg geben, hier raus zu kommen... Der Rest ist nicht lesbar."
+    }
+    ,"TXT_NOTICE_ROOM_492_NR_0" : {
+         "de" : "Das hier schaut aus wie Berichtlage von gestern: Es gab ein verflucht starken Regen mit Sturm. Außerdem wurde in der Nähe ein Schiff gegen den Strand mit voller Wucht geprallt und in 2 Hälften geteilt. Aber ohne die gelben Schlüssel kamen wir da nicht hin..."
+    }	
+    ,"TXT_NPC_ROOM_043_NR_0" : {
+         "de" : "Was willst du denn hier im Keller? Hier hast du nicht zu suchen! Und jetzt lass mich weiter arbeiten..."
+    }	
+    ,"TXT_NPC_ROOM_202_NR_0" : {
+         "de" : "Willkommen beim größte Bibliothek der Insel. Hier findest du alle mögliche Bücher und sogar InGamehinweise, sofern Sie die passende Schlüssel dafür hast."
+	}	 
+    ,"TXT_NPC_ROOM_201_NR_0" : {
+         "de" : "Hier können Sie ein Buch nehmen und hier beim Tisch lesen. Sei aber leise, die anderen wollen nicht gestört werden."		 
+    }	
+    ,"TXT_NPC_ROOM_712_NR_0" : {
+         "de" : "Dieser Hafen verbindet sich mit der Westhafen im Westen. Leider haben die Piraten im Buchtinsel uns das Leben schwer gemacht und greifen die Boote/Schiffe an."		 
+    }
+    ,"TXT_NPC_ROOM_712_NR_1" : {
+         "de" : "Sei vorsichtig, falls du in die große Wüste hin willst. Dort ist es ziemlich heiß und dort hausen viele giftigen Skorpione. Nimm besser reinlich Proviant und eine Waffe zum Wehren mit."		 
+    }
+    ,"TXT_NPC_ROOM_612_NR_0" : {
+         "de" : "Willkommen in unsere kleinen bescheidenen Dörfchen. :)"		 
+    }
+    ,"TXT_NPC_ROOM_612_NR_1" : {
+         "de" : "An der linken Seite der Buchtinsel leben die Piraten, aber zum Glück ist unser Dorf durch eine massive Bergkette geschützt. Außerdem ist auf dieser Inselseite eine alte Stadtruine zu finden, falls du einen Weg dorthin findest."		 
+    }
+    ,"TXT_NPC_ROOM_512_NR_0" : {
+         "de" : "Wenn du die alte Stadtruine hin willst, brauchst du vermutlich dafür das orange Schlüssel."		 
+    }
+    ,"TXT_NPC_ROOM_212_NR_0" : {
+         "de" : "Falls du mal eine Aussicht haben willst, gehe zum Leuchtturm. Da wirst du fantastische Aussicht auf nördliche Inselteil haben."		 
+    }
+    ,"TXT_NPC_ROOM_210_NR_0" : {
+         "de" : "Im Westen sah ich irgendwas Nebeliges. Im Osten eine Buchtinsel, die im Westbuchtinsel die Piratenfestung steht und im Ostbuchtinsel ein kleines Dorf befindet. Im Norden ist nur voller Ozeane und im Süden voller Berge, da sah ich ein großes altes Ruinengebäude."		 
+    }
+    ,"TXT_NPC_ROOM_012_NR_0" : {
+         "de" : "Es muss doch einen Weg in die Wasserfestung geben... *nachdenk*"		 
+    }
+    ,"TXT_NPC_ROOM_022_NR_0" : {
+         "de" : "Aktuell fahren da keine Schiffe an, wegen Piratenproblem. Die Unterstützung aus Festland wurde bereits angefordert, kam aber bis heute nicht an. Ist da was vorgefallen...?"		 
+    }
+    ,"TXT_NPC_ROOM_022_NR_1" : {
+         "de" : "Keine Zeit mit dir zu reden, ich habe ein Eilauftrag zu erledigen!"		 
+    }
+    ,"TXT_NPC_ROOM_022_NR_2" : {
+         "de" : "Ich habe gehört, im Westwald soll 2 große Ruinengebäude zu finden sein. Aber ohne ordentliche Wanderschuhe komme ich eh da nicht hin. Außerdem lauern da viele Ungeziefer."		 
+    }
+    ,"TXT_NPC_ROOM_122_NR_0" : {
+         "de" : "Wir haben leider keine Lebenselixiere für euch mehr, weitere müssen wir entweder in der Hauptstadt kaufen oder eben per Schiff vom Festland besorgen. Und beides geht nicht..."		 
+    }	
+    ,"TXT_NPC_ROOM_122_NR_1" : {
+         "de" : "Solange die Burg im hohen Hügel steht, ist unsere Stadt vorerst geschützt. Wegen Ungeziefer und die problematischen Banditen."		 
+    }	
+    ,"TXT_NPC_ROOM_922_NR_0" : {
+         "de" : "Ich, der Inselforscher untersuche diese alte Stadtruine im großen Wüste und hatte vieles entdeckt. Nur zu doof, dass wir keinen roten Schlüssel dafür haben, der Zugang zur Wüstenfestung. Diese wurde von Beginn an die rote Tür errichtet, um unbefugte Personen fernzuhalten."		 
+    }	
+    ,"TXT_NPC_ROOM_932_NR_0" : {
+         "de" : "Ich sitze hier fest. Die Mauer, die im Süden von hier befindet, ist versperrt und lässt keinen durch. Da musst du einen anderen Weg suchen."		 
+    }	
+    ,"TXT_NPC_ROOM_832_NR_3" : {
+         "de" : "Sör bei meiner Arbeit nicht, ich muss Bäume für Bauholz hacken."		 
+    }	
+    ,"TXT_NPC_ROOM_132_NR_0" : {
+         "de" : "*arbeitet  gerade auf dem angebauten Weizenfelder*"		 
+    }	
+    ,"TXT_NPC_ROOM_132_NR_1" : {
+         "de" : "Hier wird Weizen angebaut und nun lass mich weiter arbeiten."		 
+    }	
+    ,"TXT_NPC_ROOM_132_NR_2" : {
+         "de" : "*arbeitet gerade auf dem angebauten Weizenfelder*"		 
+    }	
+    ,"TXT_NPC_ROOM_032_NR_0" : {
+         "de" : "Diese Stelle ist einen schönen Aussicht: Ozean mit Sonnenuntergang. Hach..."		 
+    }	
+    ,"TXT_NPC_ROOM_032_NR_1" : {
+         "de" : "*arbeitet gerade auf dem angebauten Weizenfelder*"		 
+    }	
+    ,"TXT_NPC_ROOM_032_NR_2" : {
+         "de" : "*arbeitet gerade auf dem angebauten Weizenfelder*"		 
+    }	
+    ,"TXT_NPC_ROOM_042_NR_0" : {
+         "de" : "Hallo, Reisender. Ich habe gehört, dass im hohen Bergen viele Ruinen gibt. Aber der Aufstieg zum Westgebirge ist hart. Da solltest du besser ein Paar Wanderschuhe besorgen."		 
+    }	
+    ,"TXT_NPC_ROOM_041_NR_0" : {
+         "de" : "Wegen die großen Mauer im Südinsel kann ich nicht so wirklich in die Hauptstadt reisen. Da im Moment kein Schiff im Stadt Azmar befindet und die Fähre wegen Piratenaktivitäten eingestellt wurde. Was nun?"		 
+    }
+    ,"TXT_NPC_ROOM_252_NR_0" : {
+         "de" : "Im Wald ist sicher voller sperrige Pflanzen, die im Weg stehen. Da brauchst du entweder ein scharfes Klinge bzw. Messer oder vielleicht nen Sichel für hartnäckige Pflanzen. Leider habe ich diese Gegenstände nicht. :("		 
+    }	
+    ,"TXT_NPC_ROOM_952_NR_2" : {
+         "de" : "Hallo, Reisender. Willst du was zum Trinken? Ach so, Informationen... \nIm Ostseite des Berges der Eingang ist im Moment von Banditen besetzt. Da kommst du nicht ohne weiteres hin. Außer du findest einen Weg vorbei..."		 
+    }	
+    ,"TXT_NPC_ROOM_951_NR_1" : {
+         "de" : "Einer meiner Reisen habe ich der Wassertempel im Ostwald gesehen. Es ist umgeben von See und der Eingang zum Tempel ist versperrt. Womöglich wirst du einen Schlüssel brauchen..."		 
+    }	
+    ,"TXT_NPC_ROOM_762_NR_0" : {
+         "de" : "Aufseher: Dies hier ist der Bergwerk. Dort bauen wir Eisen, Steine und andere Rohstoffe ab. Willst du hier mal zukünftig arbeiten? Nur Spaß... im Bergwerk gibt es viele kleine Steinen, das für die Schleuder geeignet ist."		 
+    }
+    ,"TXT_NPC_ROOM_762_NR_1" : {
+         "de" : "Hier in der Nähe ist ein großer Mauer, dessen Weg in die Gebirge versperrt wird und von Banditen besetzt hält."		 
+    }	
+    ,"TXT_NPC_ROOM_672_NR_0" : {
+         "de" : "Du willst nach Westen der Insel? Dann nimm der gelbe Schlüssel. Dieser sollte der Tor zum Dorf öffnen. Viel Glück auf deiner Reise."		 
+    }	
+    ,"TXT_NPC_ROOM_872_NR_0" : {
+         "de" : "Hmm... wir brauchen noch mehr Bauholz für das Schiffsreparatur... *nachdenk*"		 
+    }	
+    ,"TXT_NPC_ROOM_982_NR_0" : {
+         "de" : "Du willst zum Regierungshaus? Dann brauchst du der blaue Schlüssel, aber es gibt einen anderen Weg hinein: durchs Kanalisation. Aber dafür brauchst du der dunkelrote Schlüssel..."
+    }	
+    ,"TXT_NPC_ROOM_982_NR_1" : {
+         "de" : "Gut, dass die Stadt eine so starke Mauer hat, sonst wären wir längst von Ungeziefer überrannt worden. Aber wer weiß, wie lange das standhält?"		 
+    }	
+    ,"TXT_NPC_ROOM_982_NR_2" : {
+         "de" : "Wenn du Essen haben willst, musst du zum Farmgebiet im Westen hingehen. Da ist eine Bäckerei mitsamt Mühle zu finden."		 
+    }	
+    ,"TXT_NPC_ROOM_882_NR_0" : {
+         "de" : "Ich, der Naturexperte, gebe dir ein Tipp. Der Knoblauch wachsen im Sand mit Wasser in der Nähe und manchmal sind einigen sogar unter der Sand vergraben. Aber manche ist nicht so leicht ranzukommen."		 
+    }	
+    ,"TXT_NPC_ROOM_882_NR_1" : {
+         "de" : "Wir wurden von einen Sturmwetter erfasst worden. Das war ein ziemliches Chaos. Die meisten anlaufenden Schiffe sanken auf Grund des Meeres. Nur noch einer vor dem Hafen steht noch, aber es ist leider beschädigt worden. Aber die Reparaturen laufen schon an."		 
+    }	
+    ,"TXT_NPC_ROOM_882_NR_2" : {
+         "de" : "Die ganzen Ungeziefer machen mich noch echt verrückt, wenn es doch bloß eine effektive Waffe gegen die ganzen Viecher gäbe."		 
+    }	
+    ,"TXT_NPC_ROOM_992_NR_3" : {
+         "de" : "Wegen dieser Sturms wurde das Schiff stark beschädigt und muss daher viele Reparaturen vorgenommen werden. Das kann eine Weile dauern. Komm später wieder zurück, wenn wir damit fertig sind."		 
+    }	
+    ,"TXT_NPC_ROOM_992_NR_1" : {
+         "de" : "Einer der Inselerforscher haben erzählt, dass der orange Schlüssel im Wüstenfestung sei. Ob das auch stimmt?"		 
+    }	
+    ,"TXT_NPC_ROOM_892_NR_0" : {
+         "de" : "Willkommen im unsere Regierungshaus. Falls Sie einen Anliegen haben, wenden Sie bitte an Sekretariat."		 
+    }
+    ,"TXT_NPC_ROOM_981_NR_2" : {
+         "de" : "Ich suche schon lange die beiden verschollenen Schlüssel, den sogenannte Nr. 8 und die Nr. 9. Vielleicht sind diese Schlüsseln schwer zu finden..., an den Stellen, das wir am wenigsten erwarten würden..."		 
+    }
+    ,"TXT_NPC_ROOM_890_NR_0" : {
+         "de" : "Du befindest gerade beim Verwaltungsbereich der Etage 2. Hier gibt nicht so viel zu sehen. Nur Arbeitsbereiche."		 
+    }
+    ,"TXT_NPC_ROOM_782_NR_0" : {
+         "de" : "Willkommen beim Bäckerei. Willst du unsere Brot kaufen? Wenn du der blaue Schlüssel hast, darfst du welche im Lager mitnehmen. Nimm aber nicht alles weg, die anderen wollen auch was zum Essen haben." 
+    }
+    ,"TXT_NPC_ROOM_782_NR_3" : {
+         "de" : "*arbeitet  gerade auf dem angebauten Weizenfelder*"		 
+    }
+    ,"TXT_NPC_ROOM_792_NR_0" : {
+         "de" : "Die Haie musst du vor acht nehmen, da bin ich nur knapp davongekommen. Diese sind echt gemeingefährlich. Selbst mit Schwimmflossen kann ich vor den Haien nicht entkommen. Die sind ziemlich schnell im Wasser unterwegs."		 
+    }
+    ,"TXT_NPC_ROOM_792_NR_1" : {
+         "de" : "Hinter das Haus ist voller Pflanzengestrüpp. Da komme ich nicht ohne scharfes Messer durch. Ich hätte so gerne hinter das Bauernhaus erkunden wollen, aber das geht leider nicht..."		 
+    }
+    ,"TXT_NPC_ROOM_492_NR_0" : {
+         "de" : "Willkommen im unsere bescheidenes Dorf."		 
+    }
+    ,"TXT_NPC_ROOM_492_NR_1" : {
+         "de" : "Du willst wissen, ob es noch eine Stadt gibt? Stadt Azmar liegt im Nordwesten der Insel. Um da zu gelangen, musst du den Strand entlang reisen. Sei vorsichtig vor der großen Flussmündung."		 
+    }
+    ,"TXT_NPC_ROOM_492_NR_2" : {
+         "de" : "Wir sind doch nur wehrlose Dorfbewohner, was können wir schon gegen die Ungeziefer ausrichten..."		 
+    }
+    ,"TXT_NPC_ROOM_392_NR_0" : {
+         "de" : "Charlie, du lebst noch. Wir haben wirklich Pech gehabt. Dieser doofe Sturm... egal, ich bleibe vorerst hier und versuche die Waren vom Schiff zu raus zu bergen."		 
+    }
+    ,"TXT_NPC_ROOM_392_NR_1" : {
+         "de" : "Was für ein Pechtag aber auch. Du solltest besser die Stadt im Nordwesten aufsuchen. Vielleicht gibt es da jemanden, der dir hilft. Und du hast dein Schleuder verloren und daher sei vorsichtig da draußen. Auf die Insel der Ruinen stimmt irgendwas nicht..."
+    }
+    ,"TXT_NPC_ROOM_954_NR_0" : {
+         "de" : "Hallo, wenn du zur nächsten Stadt willst, gehe weiter nach Westen."		 
+    }
+    ,"TXT_NPC_ROOM_854_NR_0" : {
+         "de" : "Außenwelter, bitte hilf uns, die bösen verrückte Kult im Norden machen uns nur Probleme. Kannst du für uns die Kult im Norden beseitigen? Wir hätten längst dort übernehmen können und damit der alte Edelsteinschatz selbst bergen können. Bitte..."		 
+    }
+    ,"TXT_NPC_ROOM_854_NR_1" : {
+         "de" : "Du willst die alte Kulturgeschichte von unseren Vorfahren wissen. Dann gehe zum Historische antike Ruine. Dort sollte die alten Inschriften auf den Steinen gemeißelt sein."		 
+    }
+    ,"TXT_NPC_ROOM_854_NR_2" : {
+         "de" : "Ah, Außenwelter. Bist du hier gekommen, um das Ungeziefer-Plage ein Ende zu bereiten? Wenn ja, dann kann ich dir helfen. Gehe zu den Stadtlager im Untergrund und nimm so viel, wie du brauchst, aber lass das Essen hier. Sonst verhungern wir."		 
+    }
+    ,"TXT_NPC_ROOM_850_NR_0" : {
+         "de" : "Es ist schon lange her, dass Außenweltler hier zum Besuch kommen. Ich meine natürlich dich."		 
+    }
+    ,"TXT_NPC_ROOM_850_NR_1" : {
+         "de" : "Wir leben schon lange hier in der Höhlenstadt. Dank leuchtenen Kristalle, die aus dem Boden ragen und die essbaren tollen Pilze, das im Höhle gut gedeihen kann. Gott sei Dank."		 
+    }
+    ,"TXT_NPC_ROOM_850_NR_3" : {
+         "de" : "Willkommen in unsere Stadt. Nur mal freundlich ausgedrückt."		 
+    }
+    ,"TXT_NPC_ROOM_482_NR_0" : {
+         "de" : "Die manchen Ruinen haben miese/gemeine Fallen, denen man aufpassen muss.  Und noch was: im Osten von hier ist eine alte Waldfestung. Dort soll der violette Schlüssel versteckt sein. Woher ich das weiß, ich war mal ein Teil der Inselerkunder. Und nun bin ich jetzt im Ruhestand, für immer..."		 
+    }
+    ,"TXT_NPC_ROOM_763_NR_0" : {
+         "de" : "Hast du irgendwo meine Spitzhacke gesehen? Ohne diese Spitzhacke kann ich nicht arbeiten. Argh, warum muss das ausgerechnet bei mir passieren?"		 
+    }
+    ,"TXT_NPC_ROOM_763_NR_1" : {
+         "de" : "Ich habe bereits anderen Höhlen erkundet. Aber wegen spärliche Dunkelheit konnte ich kaum etwas erkennen, aber es war zum Glück nicht stockfinster."		 
+    }
+    ,"TXT_NPC_ROOM_763_NR_2" : {
+         "de" : "Im Höhlen gibt oft Höhlendornen und Ungeziefer-Nester. Sei vorsichtig, wenn du eine Höhle erkundest. Und nun lass mich bitte weiter arbeiten..."		 
+    }
+    ,"TXT_NPC_ROOM_773_NR_0" : {
+         "de" : "In diesen Höhlenabschnitt gibt in großen Vorkommen Eisenerz. Das ist eine überlebenswichtige Rohstoff, das für Herstellung von Eisen erforderlich ist."		 
+    }
+	,"TXT_EPISODE_WON" : {
+         "de" : "Du hast es geschafft! Gutes Ende -> Du hast die Ursache der Plage endgültig beseitigt und alle 4 Edelsteine in deinen Besitz gebracht :) \n\nSchlechtes Ende: Du hast mit der 4 gefundenen Edelsteine aus dem Staub gemacht. Nach paar Wochen wurde die Insel von Ungeziefern komplett überrannt."
+    }
+    ,"TXT_ROOM_200" : {
+         "de" : "Die große Bibliothek OG2"
+    }
+    ,"TXT_ROOM_210" : {
+         "de" : "Der Leuchtturm im oberste Etage"
+    }
+    ,"TXT_ROOM_820" : {
+         "de" : "Die Wüstenfestung OG2"
+    }
+    ,"TXT_ROOM_430" : {
+         "de" : "Der heilige Tempel Jakysus OG2 Nord"
+    }
+    ,"TXT_ROOM_440" : {
+         "de" : "Der heilige Tempel Jakysus OG2 Süd"
+    }
+    ,"TXT_ROOM_050" : {
+         "de" : "Das Haus der Entscheidung OG2"
+    }
+    ,"TXT_ROOM_850" : {
+         "de" : "Höhlenstadt Dharmon"
+    }
+    ,"TXT_ROOM_890" : {
+         "de" : "Der Regierungshaus OG2"
+    }
+    ,"TXT_ROOM_201" : {
+         "de" : "Die große Bibliothek OG1"
+    }
+    ,"TXT_ROOM_601" : {
+         "de" : "Der Sonnentempel OG1"
+    }
+    ,"TXT_ROOM_011" : {
+         "de" : "Alte Ruineüberreste im Obergeschoss"
+    }
+    ,"TXT_ROOM_111" : {
+         "de" : "Die Waldvilla OG1"
+    }
+    ,"TXT_ROOM_211" : {
+         "de" : "Der Leuchtturm OG1"
+    }
+    ,"TXT_ROOM_311" : {
+         "de" : "Die Piratenfestung OG1"
+    }
+    ,"TXT_ROOM_021" : {
+         "de" : "Stadt Azmar (Westseite) OG1"
+    }
+    ,"TXT_ROOM_121" : {
+         "de" : "Stadt Azmar und die kleine Festung Ostseite OG1"
+    }
+    ,"TXT_ROOM_821" : {
+         "de" : "Die Wüstenfestung OG1"
+    }
+    ,"TXT_ROOM_431" : {
+         "de" : "Der heilige Tempel Jakysus OG1 Nord"
+    }
+    ,"TXT_ROOM_631" : {
+         "de" : "Banditenfestung OG1"
+    }
+    ,"TXT_ROOM_931" : {
+         "de" : "Kleines Haus an der Bergecke OG1"
+    }
+    ,"TXT_ROOM_041" : {
+         "de" : "Strandgasthaus -Rote Oktopus- OG"
+    }
+    ,"TXT_ROOM_241" : {
+         "de" : "Der Außenposten im Vorgebirge OG1"
+    }
+    ,"TXT_ROOM_441" : {
+         "de" : "Der heilige Tempel Jakysus OG1 Süd"
+    }
+    ,"TXT_ROOM_841" : {
+         "de" : "Der Wassertempelsee OG1"
+    }
+    ,"TXT_ROOM_051" : {
+         "de" : "Das Haus der Entscheidung OG1"
+    }
+    ,"TXT_ROOM_251" : {
+         "de" : "Das kleine Haus OG"
+    }	
+    ,"TXT_ROOM_551" : {
+         "de" : "Tempel von Fuarus OG"
+    }
+    ,"TXT_ROOM_851" : {
+         "de" : "Heiligtum von Ildir OG Nord"
+    }
+    ,"TXT_ROOM_951" : {
+         "de" : "Das Gasthaus Gnädiges Segelboot und die Küstenwache OG"
+    }	
+    ,"TXT_ROOM_561" : {
+         "de" : "Der alte Waldtempel Haikliris OG"
+    }	
+    ,"TXT_ROOM_861" : {
+         "de" : "Heiligtum von Ildir OG1 Süd"
+    }	
+    ,"TXT_ROOM_371" : {
+         "de" : "Alte Steinbrücke-Übergang"
+    }	
+    ,"TXT_ROOM_281" : {
+         "de" : "Der Tempel Viglo OG"
+    }	
+    ,"TXT_ROOM_581" : {
+         "de" : "Die alte Areus-Waldfestung OG"
+    }
+    ,"TXT_ROOM_881" : {
+         "de" : "HS Ayrith - Wohnbezirk - Nordwest OG"
+    }
+    ,"TXT_ROOM_981" : {
+         "de" : "HS Ayrith - Reichenvirtel - Nordost OG"
+    }	
+    ,"TXT_ROOM_891" : {
+         "de" : "HS Ayrith - Regierungshaus - Südwest OG1"
+    }	
+    ,"TXT_ROOM_991" : {
+         "de" : "HS Ayrith - Industriebezirk - Südost OG"
+    }	
+    ,"TXT_ROOM_002" : {
+         "de" : "Inselschrein Ither im offenen Meer"
+    }	
+    ,"TXT_ROOM_102" : {
+         "de" : "Die nördliche Westküste"
+    }	
+    ,"TXT_ROOM_202" : {
+         "de" : "Die große Bibliothek EG"
+    }	
+    ,"TXT_ROOM_302" : {
+         "de" : "Das Haus an den Hügelwald"
+    }	
+    ,"TXT_ROOM_402" : {
+         "de" : "Der Piratenbuchthafen"
+    }	
+    ,"TXT_ROOM_502" : {
+         "de" : "Der alte Stadtruine am Ostbuchtinsel"
+    }	
+    ,"TXT_ROOM_602" : {
+         "de" : "Der Tempel Reliance"
+    }	
+    ,"TXT_ROOM_702" : {
+         "de" : "Steile Ostbuchtküste"
+    }	
+    ,"TXT_ROOM_802" : {
+         "de" : "Wüstenecke"
+    }
+    ,"TXT_ROOM_902" : {
+         "de" : "Alte Ruinen-Hafen"
+    }	
+    ,"TXT_ROOM_012" : {
+         "de" : "Die Westküste und der alte Tempelanlage Jihdon"
+    }	
+    ,"TXT_ROOM_112" : {
+         "de" : "Die Waldvilla und die alte Kapelle"
+    }	
+    ,"TXT_ROOM_212" : {
+         "de" : "Der West-Buchthafen und die Leuchtturm"
+    }	
+    ,"TXT_ROOM_312" : {
+         "de" : "Die Piratenfestung der Westbuchtinsel"
+    }	
+    ,"TXT_ROOM_412" : {
+         "de" : "Das Gittertor zum Ostbuchtinsel"
+    }	
+    ,"TXT_ROOM_512" : {
+         "de" : "Alte Vorstadtruine"
+    }	
+    ,"TXT_ROOM_612" : {
+         "de" : "Das Dorf Faversham an der Küste"
+    }	
+    ,"TXT_ROOM_712" : {
+         "de" : "Der Ost-Buchthafen"
+    }	
+    ,"TXT_ROOM_812" : {
+         "de" : "Der Eingang der heißen Wüste"
+    }	
+    ,"TXT_ROOM_912" : {
+         "de" : "Alte Klippenburg Xorasil"
+    }	
+    ,"TXT_ROOM_022" : {
+         "de" : "Hafenstadt Martslock im Westen"
+    }	
+    ,"TXT_ROOM_122" : {
+         "de" : "Hafenstadt Martslock im Westen und die Burgfestung"
+    }	
+    ,"TXT_ROOM_222" : {
+         "de" : "Das alte Aussichthaus im Nordgebirge"
+    }	
+    ,"TXT_ROOM_322" : {
+         "de" : "Land der Sanddünenwüste West"
+    }	
+    ,"TXT_ROOM_422" : {
+         "de" : "Land der Sanddünenwüste Ost"
+    }	
+    ,"TXT_ROOM_522" : {
+         "de" : "Weiße Marmorsteinküste"
+    }	
+    ,"TXT_ROOM_622" : {
+         "de" : "Der verlassene Handel-Außenposten"
+    }	
+    ,"TXT_ROOM_722" : {
+         "de" : "Die alte Steinbruchabbaustelle"
+    }	
+    ,"TXT_ROOM_822" : {
+         "de" : "Die Wüstenfestung EG"
+    }	
+    ,"TXT_ROOM_922" : {
+         "de" : "Die alte Wüsteruinenstadt und die Oase"
+    }	
+    ,"TXT_ROOM_032" : {
+         "de" : "Das Farmfeldgebiet von Martslock West"
+    }	
+    ,"TXT_ROOM_132" : {
+         "de" : "Das Farmfeldgebiet von Martslock Ost"
+    }	
+    ,"TXT_ROOM_232" : {
+         "de" : "Der Bergschrein-Teleporter"
+    }	
+    ,"TXT_ROOM_332" : {
+         "de" : "Virnola Bergsee im hohen Gebirgen"
+    }	
+    ,"TXT_ROOM_432" : {
+         "de" : "Der heilige Tempel Jakysus EG Nord"
+    }	
+    ,"TXT_ROOM_532" : {
+         "de" : "Ruinenstadt Ascot im Gebirge"
+    }	
+    ,"TXT_ROOM_632" : {
+         "de" : "Banditenfestung EG"
+    }	
+    ,"TXT_ROOM_732" : {
+         "de" : "Der Seewaldschrein-Teleporter"
+    }	
+    ,"TXT_ROOM_832" : {
+         "de" : "Beengte Hügel-Wege"
+    }	
+    ,"TXT_ROOM_932" : {
+         "de" : "Kleines Haus an der Bergecke OG1"
+    }	
+    ,"TXT_ROOM_042" : {
+         "de" : "Strandgasthaus -Rote Oktopus- EG"
+    }	
+    ,"TXT_ROOM_142" : {
+         "de" : "Manishaw-See"
+    }	
+    ,"TXT_ROOM_242" : {
+         "de" : "Der Außenposten im Vorgebirge EG"
+    }	
+    ,"TXT_ROOM_342" : {
+         "de" : "Geschwungene Bergfluss und der Teufelschrein"
+    }	
+    ,"TXT_ROOM_442" : {
+         "de" : "Der heilige Tempel Jakysus EG (Süd)"
+    }	
+    ,"TXT_ROOM_542" : {
+         "de" : "Die antike Wasserpumpe/Aquadukt"
+    }	
+    ,"TXT_ROOM_642" : {
+         "de" : "Aquadukt-Brücke"
+    }	
+    ,"TXT_ROOM_742" : {
+         "de" : "Aithidhuru-Tempel EG und der Wachposten"
+    }	
+    ,"TXT_ROOM_842" : {
+         "de" : "Der Wassertempel Hyaos EG"
+    }	
+    ,"TXT_ROOM_942" : {
+         "de" : "Die Grenzmauer im Ostinsel"
+    }	
+    ,"TXT_ROOM_052" : {
+         "de" : "Das Haus der Entscheidung EG"
+    }	
+    ,"TXT_ROOM_152" : {
+         "de" : "Kleine Ruine und die Schutzmauer"
+    }	
+    ,"TXT_ROOM_252" : {
+         "de" : "Die Banditenburg und das Einsiedlerhaus"
+    }	
+    ,"TXT_ROOM_352" : {
+         "de" : "Bergfluss Waysea"
+    }	
+    ,"TXT_ROOM_452" : {
+         "de" : "Scarmont-Bergsee"
+    }	
+    ,"TXT_ROOM_552" : {
+         "de" : "Tempel von Fuarus EG"
+    }	
+    ,"TXT_ROOM_652" : {
+         "de" : "Alte verlassene Bergmine Prodes"
+    }	
+    ,"TXT_ROOM_752" : {
+         "de" : "Banditenaußenposten und die Mauer der Westseite"
+    }	
+    ,"TXT_ROOM_852" : {
+         "de" : "Heiligtum von Ildir EG Nord"
+    }	
+    ,"TXT_ROOM_952" : {
+         "de" : "Das Gasthaus Gnädiges Segelboot und die Küstenwache EG"
+    }	
+    ,"TXT_ROOM_062" : {
+         "de" : "Verlassene Waldhaus"
+    }	
+    ,"TXT_ROOM_162" : {
+         "de" : "Flussstrom West-Engan"
+    }	
+    ,"TXT_ROOM_262" : {
+         "de" : "Flusshandabzweigung"
+    }	
+    ,"TXT_ROOM_362" : {
+         "de" : "Seltsames Gebäude an der Flusskopf"
+    }	
+    ,"TXT_ROOM_462" : {
+         "de" : "Der Waldschrein-Teleporter"
+    }	
+    ,"TXT_ROOM_562" : {
+         "de" : "Der alte Waldtempel Haikliris EG"
+    }	
+    ,"TXT_ROOM_662" : {
+         "de" : "Nubstus-Tempelanlage und das unerreichbare Haus"
+    }	
+    ,"TXT_ROOM_762" : {
+         "de" : "Berkwerk am Waldrand"
+    }	
+    ,"TXT_ROOM_862" : {
+         "de" : "Heiligtum von Ildir EG Süd"
+    }	
+    ,"TXT_ROOM_962" : {
+         "de" : "Böse Viehnest im Walde"
+    }	
+    ,"TXT_ROOM_072" : {
+         "de" : "Die Küste Iemis"
+    }	
+    ,"TXT_ROOM_172" : {
+         "de" : "Die große Flussdelta mit kleinen Strandinseln"
+    }	
+    ,"TXT_ROOM_272" : {
+         "de" : "Der Banditen-Wachturm"
+    }	
+    ,"TXT_ROOM_372" : {
+         "de" : "Die große Flussbrücke"
+    }	
+    ,"TXT_ROOM_472" : {
+         "de" : "Cudrus-Ruine West"
+    }	
+    ,"TXT_ROOM_572" : {
+         "de" : "Cudrus-Ruine Ost"
+    }	
+    ,"TXT_ROOM_672" : {
+         "de" : "Das Haus der Ruinenentdecker"
+    }	
+    ,"TXT_ROOM_772" : {
+         "de" : "Das Farmsiedlung an der Fluss"
+    }	
+    ,"TXT_ROOM_872" : {
+         "de" : "Das Sägewerk"
+    }	
+    ,"TXT_ROOM_972" : {
+         "de" : "Der Dreieckhügel"
+    }	
+    ,"TXT_ROOM_082" : {
+         "de" : "Südwestinsel Moonlit - Der Ausgang"
+    }	
+    ,"TXT_ROOM_182" : {
+         "de" : "Südwestinsel Moonlit - Perlküste"
+    }	
+    ,"TXT_ROOM_282" : {
+         "de" : "Der Tempel Viglo EG"
+    }	
+    ,"TXT_ROOM_382" : {
+         "de" : "Durchganghalle - Tiefer Wald"
+    }	
+    ,"TXT_ROOM_482" : {
+         "de" : "Waldlichtung durchs strömenden Flussweg"
+    }	
+	,"TXT_ROOM_582" : {
+         "de" : "Die alte Areus-Waldfestung EG"
+    }	
+    ,"TXT_ROOM_682" : {
+         "de" : "Die riesige antike Sperrmauer"
+    }	
+    ,"TXT_ROOM_782" : {
+         "de" : "Bäckerei und die Mühle"
+    }	
+    ,"TXT_ROOM_882" : {
+         "de" : "HS Ayrith - Wohnbezirk - Nordwest EG"
+    }	
+    ,"TXT_ROOM_982" : {
+         "de" : "HS Ayrith - Reichenvirtel - Nordost EG"
+    }	
+    ,"TXT_ROOM_092" : {
+         "de" : "Der Tempel Vomdar"
+    }	
+    ,"TXT_ROOM_192" : {
+         "de" : "Das Haus der Ovdar-Turms"
+    }	
+    ,"TXT_ROOM_292" : {
+         "de" : "Die Südwestküste"
+    }	
+    ,"TXT_ROOM_392" : {
+         "de" : "Alte Siedlerhaus an der Strandküste"
+    }	
+    ,"TXT_ROOM_492" : {
+         "de" : "Das Dorf Erast"
+    }	
+    ,"TXT_ROOM_592" : {
+         "de" : "Der Anfang - Schiffbruch"
+    }	
+    ,"TXT_ROOM_692" : {
+         "de" : "Die Gesteinküste"
+    }	
+    ,"TXT_ROOM_792" : {
+         "de" : "Südfarmland - Flussmündung"
+    }	
+    ,"TXT_ROOM_892" : {
+         "de" : "HS Ayrith - Regierungshaus - Südwest EG"
+    }	
+    ,"TXT_ROOM_992" : {
+         "de" : "HS Ayrith - Industriebezirk - Südost EG"
+    }	
+    ,"TXT_ROOM_003" : {
+         "de" : "Secret Dungeon UG1 - Raum der Pfeile"
+    }	
+    ,"TXT_ROOM_203" : {
+         "de" : "Die große Bibliothek UG"
+    }	
+    ,"TXT_ROOM_403" : {
+         "de" : "Geheime Fluchtweg der Piraten"
+    }	
+    ,"TXT_ROOM_503" : {
+         "de" : "Die Kellerruine"
+    }	
+    ,"TXT_ROOM_603" : {
+         "de" : "Halle der Totenkopf"
+    }	
+    ,"TXT_ROOM_013" : {
+         "de" : "Die Zugangspeere-Anlage"
+    }	
+    ,"TXT_ROOM_113" : {
+         "de" : "Waldvilla-Keller/Höhlesee-Untergrund"
+    }	
+    ,"TXT_ROOM_213" : {
+         "de" : "Der Leuchtturmkeller"
+    }	
+    ,"TXT_ROOM_313" : {
+         "de" : "Piratenkellerlager"
+    }	
+    ,"TXT_ROOM_413" : {
+         "de" : "Das Hindernis"
+    }		
+    ,"TXT_ROOM_513" : {
+         "de" : "Kleine Lagerkammer im Untergrund"
+    }	
+    ,"TXT_ROOM_813" : {
+         "de" : "Sandige Pfeilwege"
+    }	
+    ,"TXT_ROOM_913" : {
+         "de" : "Im Untergrund der Xorasil"
+    }	
+    ,"TXT_ROOM_023" : {
+         "de" : "Kanalisation West"
+    }		
+    ,"TXT_ROOM_123" : {
+         "de" : "Kanalisation Ost"
+    }		
+    ,"TXT_ROOM_223" : {
+         "de" : "Verfallene Ruinendorf Llyn"
+    }		
+    ,"TXT_ROOM_323" : {
+         "de" : "Kleiner Umweg"
+    }	
+    ,"TXT_ROOM_423" : {
+         "de" : "Die Handhöhle"
+    }	
+    ,"TXT_ROOM_523" : {
+         "de" : "Uralte Lagerruine"
+    }	
+    ,"TXT_ROOM_623" : {
+         "de" : "Verlassene Handelaußenposten-Lager UG"
+    }	
+    ,"TXT_ROOM_823" : {
+         "de" : "Die Wüstenfestung UG - Raum der Nester"
+    }	
+    ,"TXT_ROOM_923" : {
+         "de" : "Kleine Kellerlager"
+    }
+    ,"TXT_ROOM_033" : {
+         "de" : "Zweiweg-Schatz"
+    }
+    ,"TXT_ROOM_133" : {
+         "de" : "Höhleschrein - Teleporter"
+    }
+    ,"TXT_ROOM_433" : {
+         "de" : "Der heilige Tempel Jakysus UG"
+    }
+    ,"TXT_ROOM_533" : {
+         "de" : "Untergrundtempel Kiquris"
+    }
+    ,"TXT_ROOM_633" : {
+         "de" : "Banditenfestung im Untergrund"
+    }	
+    ,"TXT_ROOM_043" : {
+         "de" : "Strandgasthaus -Rote Oktopus- UG"
+    }
+    ,"TXT_ROOM_143" : {
+         "de" : "Das Ungeziefer-Höhle"
+    }
+    ,"TXT_ROOM_343" : {
+         "de" : "Der Teufeltempel UG1"
+    }
+    ,"TXT_ROOM_443" : {
+         "de" : "Der heilige Tempel Jakysus UG1 (Süd)"
+    }
+    ,"TXT_ROOM_543" : {
+         "de" : "Die antike Wasseranlage"
+    }
+    ,"TXT_ROOM_643" : {
+         "de" : "Die X-Höhle"
+    }
+    ,"TXT_ROOM_743" : {
+         "de" : "Aithidhuru-Tempel UG"
+    }
+    ,"TXT_ROOM_843" : {
+         "de" : "Der Wassertempel Hyaos UG"
+    }
+    ,"TXT_ROOM_943" : {
+         "de" : "Der Wassertempel Hyaos UG - Lagerraum"
+    }
+    ,"TXT_ROOM_053" : {
+         "de" : "Das Haus der Entscheidung UG"
+    }
+    ,"TXT_ROOM_153" : {
+         "de" : "Untergrund-Ruine UG"
+    }
+    ,"TXT_ROOM_253" : {
+         "de" : "Wachraum der Banditen"
+    }
+    ,"TXT_ROOM_353" : {
+         "de" : "Der Höhlentempel Ieyar"
+    }
+    ,"TXT_ROOM_453" : {
+         "de" : "Antike Schlüssel-Nr. 14"
+    }
+    ,"TXT_ROOM_553" : {
+         "de" : "Tempel von Fuarus UG - Teleporterruine"
+    }
+    ,"TXT_ROOM_653" : {
+         "de" : "Tecumdows-Höhle"
+    }
+    ,"TXT_ROOM_753" : {
+         "de" : "Banditenlager UG und die Ruine Atos"
+    }
+    ,"TXT_ROOM_853" : {
+         "de" : "Heiligtum von Ildir UG Nord"
+    }
+    ,"TXT_ROOM_953" : {
+         "de" : "Geheimgang zur Küstenwache"
+    }
+    ,"TXT_ROOM_063" : {
+         "de" : "Verming-Höhle"
+    }
+    ,"TXT_ROOM_163" : {
+         "de" : "Kleine Mimuwani-Höhleschrein"
+    }
+    ,"TXT_ROOM_263" : {
+         "de" : "Geheimbanditenbasis"
+    }
+    ,"TXT_ROOM_363" : {
+         "de" : "Raum der Steinblöcke"
+    }
+    ,"TXT_ROOM_463" : {
+         "de" : "Prüfung des Ungeziefers / das besondere Waldschuhe"
+    }
+    ,"TXT_ROOM_563" : {
+         "de" : "Bewachsene Ruineuntergrund - Haikliris UG"
+    }
+    ,"TXT_ROOM_763" : {
+         "de" : "Untergrundbergwerk Nord"
+    }
+    ,"TXT_ROOM_863" : {
+         "de" : "Heiligtum von Ildir UG Süd"
+    }
+    ,"TXT_ROOM_073" : {
+         "de" : "Das Kugelhalle"
+    }
+    ,"TXT_ROOM_173" : {
+         "de" : "Kleine Oase-Höhle"
+    }
+    ,"TXT_ROOM_273" : {
+         "de" : "Banditenlager-Höhle"
+    }
+    ,"TXT_ROOM_473" : {
+         "de" : "Ruglem-Höhle"
+    }
+    ,"TXT_ROOM_673" : {
+         "de" : "Der Hauskeller"
+    }
+    ,"TXT_ROOM_773" : {
+         "de" : "Untergrundbergwerk Süd (in Bau)"
+    }
+    ,"TXT_ROOM_873" : {
+         "de" : "Das Ruinenlabyrinth"
+    }
+    ,"TXT_ROOM_283" : {
+         "de" : "Der Tempel Viglo UG - Gemeiner Höhlenbusch"
+    }
+    ,"TXT_ROOM_483" : {
+         "de" : "Raum der Türrätseln - U-Tempel Zieyar"
+    }
+    ,"TXT_ROOM_583" : {
+         "de" : "Die alte Areus-Waldfestung UG1"
+    }
+    ,"TXT_ROOM_683" : {
+         "de" : "Areus-Falle-Raum"
+    }
+    ,"TXT_ROOM_883" : {
+         "de" : "Kanalsation Nordwest"
+    }
+    ,"TXT_ROOM_983" : {
+         "de" : "Kanalsation Nordost"
+    }
+    ,"TXT_ROOM_093" : {
+         "de" : "Vomdar, die Rätselraum"
+    }
+    ,"TXT_ROOM_193" : {
+         "de" : "Gleichhaltige Kreisräume"
+    }
+    ,"TXT_ROOM_393" : {
+         "de" : "Carletos-Höhle/Verlassene antike Basis"
+    }
+    ,"TXT_ROOM_593" : {
+         "de" : "Terlams-Höhle"
+    }
+    ,"TXT_ROOM_893" : {
+         "de" : "Kanalsation Südwest/Untergrund des Regierungshauses"
+    }
+    ,"TXT_ROOM_993" : {
+         "de" : "Kanalsation Südost/Kellerbereich der Industriebezirk"
+    }
+    ,"TXT_ROOM_004" : {
+         "de" : "Secret Dungeon UG2 - Rutschiges Eishalle"
+    }
+    ,"TXT_ROOM_604" : {
+         "de" : "Raum der roten Edelstein"
+    }
+    ,"TXT_ROOM_704" : {
+         "de" : "Höhlentempel Lymdar"
+    }
+    ,"TXT_ROOM_804" : {
+         "de" : "Finsterne Millrial-Höhle - Position ???"
+    }
+    ,"TXT_ROOM_904" : {
+         "de" : "Finsterne Millrial-Höhle - Position ???"
+    }
+    ,"TXT_ROOM_014" : {
+         "de" : "Die Kreuzruine"
+    }
+    ,"TXT_ROOM_814" : {
+         "de" : "Die antike Lampe"
+    }
+    ,"TXT_ROOM_914" : {
+         "de" : "Finsterne Millrial-Höhle - Position ???"
+    }
+    ,"TXT_ROOM_124" : {
+         "de" : "Vergessene unheilvolle Gebetsalter"
+    }
+    ,"TXT_ROOM_424" : {
+         "de" : "Der Ausgangteleporter"
+    }
+    ,"TXT_ROOM_724" : {
+         "de" : "Gesicherte Wege"
+    }
+    ,"TXT_ROOM_824" : {
+         "de" : "Uralte Grabkammer"
+    }
+    ,"TXT_ROOM_334" : {
+         "de" : "Mega-Pfeillabyrinth"
+    }
+    ,"TXT_ROOM_434" : {
+         "de" : "Glasklare Wasserbrunnenmitte"
+    }
+    ,"TXT_ROOM_534" : {
+         "de" : "Der wachsame Wächter"
+    }
+    ,"TXT_ROOM_834" : {
+         "de" : "Unüberwindbare Wasserfestung der Nordhöhle"
+    }
+    ,"TXT_ROOM_934" : {
+         "de" : "Die innere Wasserfestung der doppelten Mauers"
+    }
+    ,"TXT_ROOM_144" : {
+         "de" : "Das Banditenhöhle-Versteck"
+    }
+    ,"TXT_ROOM_244" : {
+         "de" : "Der Alter des Sekbris"
+    }
+    ,"TXT_ROOM_344" : {
+         "de" : "Das große Wasserschieberätsel"
+    }
+    ,"TXT_ROOM_444" : {
+         "de" : "Das Tor zum tieferen Hallen"
+    }
+    ,"TXT_ROOM_544" : {
+         "de" : "Eisige Schiebangelegenheit"
+    }
+    ,"TXT_ROOM_644" : {
+         "de" : "Das Königsgrab des Heiligtums"
+    }
+    ,"TXT_ROOM_844" : {
+         "de" : "Der tiefe Höhlenuntergrund mit Höhlenfluss"
+    }
+    ,"TXT_ROOM_944" : {
+         "de" : "Alte historische antike Ruine"
+    }
+    ,"TXT_ROOM_054" : {
+         "de" : "Dunkle Grabkammer"
+    }
+    ,"TXT_ROOM_354" : {
+         "de" : "Das Ungezieferparadies"
+    }
+    ,"TXT_ROOM_454" : {
+         "de" : "Die Nestplage"
+    }
+    ,"TXT_ROOM_554" : {
+         "de" : "Der Spiegelraum"
+    }
+    ,"TXT_ROOM_854" : {
+         "de" : "Höhlenstadt Silvar"
+    }
+    ,"TXT_ROOM_954" : {
+         "de" : "Höhlenfluss ins tiefere Untergrund"
+    }
+    ,"TXT_ROOM_364" : {
+         "de" : "Gyzthar-Anlage UG1"
+    }
+    ,"TXT_ROOM_464" : {
+         "de" : "Alte Höhleabschnitt"
+    }
+    ,"TXT_ROOM_564" : {
+         "de" : "Leuchtene Kristalle im Planzenhöhle UG2"
+    }
+    ,"TXT_ROOM_864" : {
+         "de" : "Heiligtum von Ildir UG2"
+    }
+    ,"TXT_ROOM_074" : {
+         "de" : "Kammer der Tunneln"
+    }
+    ,"TXT_ROOM_174" : {
+         "de" : "Die Schatzkammer der Symmetrie"
+    }
+    ,"TXT_ROOM_374" : {
+         "de" : "Kleine Höhletempel Odis"
+    }
+    ,"TXT_ROOM_474" : {
+         "de" : "Im Höhle der alten Gemäuer"
+    }
+    ,"TXT_ROOM_084" : {
+         "de" : "Ruine-Höhlenlager"
+    }
+    ,"TXT_ROOM_184" : {
+         "de" : "Schmale Höhlengänge"
+    }
+    ,"TXT_ROOM_284" : {
+         "de" : "Alte Grabkammer der Reichen"
+    }
+    ,"TXT_ROOM_484" : {
+         "de" : "Der antike verlorene Waldschatz"
+    }
+    ,"TXT_ROOM_584" : {
+         "de" : "Die alte Areus-Waldfestung UG2"
+    }
+    ,"TXT_ROOM_094" : {
+         "de" : "Eingestürzte Tempeleingang - Exarus"
+    }
+    ,"TXT_ROOM_194" : {
+         "de" : "Die Dartvern-Höhle"
+    }
+    ,"TXT_ROOM_005" : {
+         "de" : "Secret Dungeon UG3 - Raum des Ungeziefers II"
+    }
+    ,"TXT_ROOM_415" : {
+         "de" : "Unversiegelte Ungeziefer-Brutstätte"
+    }
+    ,"TXT_ROOM_715" : {
+         "de" : "Grabkammer des Ehrwürdigens"
+    }
+    ,"TXT_ROOM_815" : {
+         "de" : "Grabsteinkammern der Mächtigen"
+    }
+    ,"TXT_ROOM_425" : {
+         "de" : "Das Tor zum finalen Raums"
+    }
+    ,"TXT_ROOM_725" : {
+         "de" : "Gang des Skorpions"
+    }
+    ,"TXT_ROOM_825" : {
+         "de" : "Spiral-Raum"
+    }
+    ,"TXT_ROOM_335" : {
+         "de" : "Der lange Weg zum Ziel"
+    }
+    ,"TXT_ROOM_435" : {
+         "de" : "Das Jing-Yang-Labyrinth"
+    }
+    ,"TXT_ROOM_535" : {
+         "de" : "Der mühsame Weg"
+    }
+    ,"TXT_ROOM_835" : {
+         "de" : "Raum der blauen Edelstein"
+    }
+    ,"TXT_ROOM_935" : {
+         "de" : "Das Tor zum Ungewissenheit"
+    }
+    ,"TXT_ROOM_445" : {
+         "de" : "Zwei Wege zum Ziel"
+    }
+    ,"TXT_ROOM_945" : {
+         "de" : "Kellerlager der Ruine"
+    }
+    ,"TXT_ROOM_855" : {
+         "de" : "Der Kelleruntergrund"
+    }
+    ,"TXT_ROOM_955" : {
+         "de" : "Keller/Höhleabschnitt"
+    }
+    ,"TXT_ROOM_365" : {
+         "de" : "Der grüne Edelstein - Gyzthar-Anlage UG2"
+    }
+    ,"TXT_ROOM_195" : {
+         "de" : "Der Raum der echten grüne Edelsteins"
+    }
+    ,"TXT_ROOM_006" : {
+         "de" : "Secret Dungeon UG4 - Raum des Schieberätsels"
+    }
+    ,"TXT_ROOM_106" : {
+         "de" : "Secret Dungeon UG4 - Super-Labyrinth Nordwest"
+    }
+    ,"TXT_ROOM_206" : {
+         "de" : "Secret Dungeon UG4 - Super-Labyrinth Nordost"
+    }
+    ,"TXT_ROOM_116" : {
+         "de" : "Secret Dungeon UG4 - Super-Labyrinth Südwest"
+    }
+    ,"TXT_ROOM_216" : {
+         "de" : "Secret Dungeon UG4 - Super-Labyrinth Südost"
+    }
+    ,"TXT_ROOM_316" : {
+         "de" : "Secret Dungeon UG4 - Geheime Schatzinsel"
+    }
+    ,"TXT_ROOM_726" : {
+         "de" : "Raum der gelben Edelsteins"
+    }
+    ,"TXT_ROOM_366" : {
+         "de" : "Die Schatzkammer der antiken Reichtums"
+    }
+	,"OBJ_BAGPACK#1_DESC" : {
+         "de" : "Ein Beutel mit etwas drin. Du solltest ihn vielleicht auspacken."
+    }
+    ,"OBJ_RING#0_DESC" : {
+         "de" : "Du hast der rote Edelstein gefunden!"
+    }
+    ,"OBJ_MAGNET_DESC" : {
+         "de" : "Dies ist ein Magnet. Er kann sehr praktisch sein, um Dinge in die richtige Richtung zu ziehen. Manche Sachen deuten nämlich nicht dorthin, wo man möchte."
+    }
+    ,"OBJ_BAGPACK#4_DESC" : {
+         "de" : "Ein Beutel mit etwas drin. Du solltest ihn vielleicht auspacken."
+    }
+    ,"OBJ_COMPASS_DESC" : {
+         "de" : "Dieser Kompass zeigt Dir leider nicht die Himmelsrichtung, sondern nur langweilige verborgene Wege in Wäldern und Gebirgen. Wer braucht denn sowas?"
+    }
+    ,"OBJ_RING#3_DESC" : {
+         "de" : "Du hast der gelbe Edelstein gefunden!"
+    }
+    ,"OBJ_BAGPACK#0_DESC" : {
+         "de" : "Ein Beutel mit etwas drin. Du solltest ihn vielleicht auspacken."
+    }	
+    ,"OBJ_PLANT_GROWING" : {
+         "de" : "Da wächst etwas vor sich hin. Wenn Du keine Mittel und Wege hast, Dir einen Weg durch Gestrüpp zu bahnen, solltest Du Dich lieber davonmachen."
+    }	
+    ,"OBJ_KNIFE_DESC" : {
+         "de" : "Ein scharfes Stahlschwert. Gut geeignet, um die großen Blätter bestimmter Pflanzen zu durchtrennen, die Dir ansonsten den Weg versperren."
+    }	
+    ,"OBJ_BAGPACK#3_DESC" : {
+         "de" : "Ein Beutel mit etwas drin. Du solltest ihn vielleicht auspacken."
+    }	
+    ,"OBJ_RING#2_DESC" : {
+         "de" : "Du hast der blaue Edelstein gefunden!"
+    }
+    ,"OBJ_RING_DESC" : {
+         "de" : "Der Edelstein glänzt wie nie, ob das irgenwo gebraucht wird?"
+    }
+    ,"OBJ_KNIFE_PICKUP" : {
+         "de" : "Du findest einen brauchbares Schwert. Es gibt Pflanzen mit großen Blättern in diesem Land, die sich davon bestimmt beeindrucken lassen."
+    }
+    ,"OBJ_BAGPACK_PICKUP" : {
+         "de" : "Was wohl in diesem Sack drin sein mag? Doch hoffentlich keine Katze?"
+    }
+    ,"OBJ_BAGPACK#2_DESC" : {
+         "de" : "Ein Beutel mit etwas drin. Du solltest ihn vielleicht auspacken."
+    }	
+    ,"OBJ_RING#1_DESC" : {
+         "de" : "Du hast der grüne Edelstein gefunden!"
+    }	
+    ,"OBJ_BUCKET#1_DESC" : {
+         "de" : "Das ist ein ganz gewöhnlicher Eimer. Du musst jetzt nur noch irgendwo Wasser hernehmen, dann hast Du einen Eimer mit Wasser drin."
+    }	
+    ,"OBJ_LAMP_DESC" : {
+         "de" : "Eine altmodische, aber hübsche und äußerst nützliche Lampe."
+    }
+    ,"OBJ_SICKLE_DESC" : {
+         "de" : "Mit dieser Sichel kannst Du Dich durch eine bestimmte Art Grünzeug hacken. Für ganze Wälder ist sie nicht gedacht."
+    }
+    ,"OBJ_SEED_DESC" : {
+         "de" : "Aus diesem Saatkorn springt eine Pflanze, die schnell ganze Gegenden überwuchern kann. Aber falls Du selbst kein bestimmtes Schneidinstrument dabei hast, wirst Du Dich in ihren Ranken und Ästen verfangen."
+    }
+    ,"OBJ_KEY_DESC" : {
+         "de" : "Einer von vielen Schlüsseln, die Du hier finden kannst. Leider nur bei bestimmten Türen hilfreich."
+    }
+    ,"OBJ_CLONE_DESC" : {
+         "de" : "Das ist doch der Typ, der in Deinem Spiegel wohnt! Und er scheint auch alles spiegelverkehrt zu machen..."
+    }
+}	

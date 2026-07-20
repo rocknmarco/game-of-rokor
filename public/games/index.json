@@ -1,0 +1,9 @@
+{
+  "defaultGame": "insel-der-ruinen",
+  "games": [
+    {
+      "id": "insel-der-ruinen",
+      "manifest": "/games/insel-der-ruinen/game.json"
+    }
+  ]
+}

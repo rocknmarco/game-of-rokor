@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "insel-der-ruinen-1.3",
+  "title": "Insel der Ruinen",
+  "version": "1.3",
+  "author": "CherryAB",
+  "engine": "tobor-web",
+  "files": {
+    "rooms": "rooms.json",
+    "translations": "translation.json",
+    "baseTranslations": "../tobor-base-translation.json",
+    "tileset": "tileset.png"
+  },
+  "grid": {
+    "roomWidth": 40,
+    "roomHeight": 28,
+    "tileWidth": 16,
+    "tileHeight": 12
+  },
+  "presentation": {
+    "locale": "de",
+    "theme": "original-tobor",
+    "titleImage": "/assets/light-archive-hero.png"
+  }
+}
